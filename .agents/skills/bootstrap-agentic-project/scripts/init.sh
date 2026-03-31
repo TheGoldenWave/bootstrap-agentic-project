@@ -100,8 +100,8 @@ dirs=(
     ".agents/skills"
     "docs/context/team"
     "docs/context/project/experience"
-    "docs/prd/demo-feature"
-    "docs/prd/demo-feature/.artifacts"
+    "docs/prd/.demo-feature"
+    "docs/prd/.demo-feature/.artifacts"
     "docs/design/tokens"
     "docs/design/components"
     "tests/specs"
@@ -305,11 +305,11 @@ fi
 echo ""
 echo "📚 Copying docs templates..."
 safe_copy "${ASSETS_DIR}/docs-templates/INDEX.md" "docs/context/INDEX.md"
-safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo" "docs/prd/demo-feature"
+safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo" "docs/prd/.demo-feature"
 # Copy hidden .artifacts directory (safe_copy_dir skips dotfiles)
-mkdir -p "docs/prd/demo-feature/.artifacts"
-safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo/.artifacts" "docs/prd/demo-feature/.artifacts"
-chmod +x "docs/prd/demo-feature/预览PRD-macOS.command" 2>/dev/null || true
+mkdir -p "docs/prd/.demo-feature/.artifacts"
+safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo/.artifacts" "docs/prd/.demo-feature/.artifacts"
+chmod +x "docs/prd/.demo-feature/预览PRD-macOS.command" 2>/dev/null || true
 
 # =================================================================
 # 15. .gitignore — protect secrets
@@ -367,8 +367,8 @@ echo "💡 下一步："
 echo "   1. 检查并填写 ${ENGINE_DIR}/mcp-servers.json 中的 API Key（Claude Code）"
 echo "   2. 检查并配置 .codex/config.toml 中的 MCP 服务（Codex CLI）"
 echo "   3. 这两个文件已自动加入 .gitignore，API Key 不会泄露"
-echo "   4. 体验双视窗 PRD：双击 docs/prd/demo-feature/预览PRD-macOS.command（macOS）"
-echo "                     或  docs/prd/demo-feature/预览PRD-Windows.bat（Windows）"
+echo "   4. 体验双视窗 PRD：双击 docs/prd/.demo-feature/预览PRD-macOS.command（macOS）"
+echo "                     或  docs/prd/.demo-feature/预览PRD-Windows.bat（Windows）"
 echo ""
 echo "   开始第一个需求："
 echo "   • Claude Code: 输入 /prd [你的初步想法]"

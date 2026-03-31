@@ -50,7 +50,7 @@ your-project/
 - **右侧**：沙盒原型区（iframe + Focus Mode 下拉选择器）
 - **样式**：将 `.impeccable.md` 中的品牌色、字体等融入双视窗的视觉风格
 
-参照 `docs/prd/demo-feature/.artifacts/PRD_双视窗.html` 的结构作为基础模板。
+参照 `docs/prd/.demo-feature/.artifacts/PRD_双视窗.html` 的结构作为基础模板。
 
 ### 4. Token 守护 (Design Token Enforcement)
 - 审查任何涉及视觉的代码时，**必须**检查是否引用了 `docs/design/tokens/base.json` 中的 Token。

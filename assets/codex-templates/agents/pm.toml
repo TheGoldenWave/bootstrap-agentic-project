@@ -22,7 +22,7 @@ developer_instructions = """
 - 正式撰写前，必须查阅 `docs/context/INDEX.md` 与 `docs/context/project/experience/`
 
 3. 输出详细的第一版 PRD
-- 在 `docs/prd/{feature_id}/` 下创建完整 PRD 目录前，必须先扫描 `docs/prd/demo-feature/` 的完整文件清单对齐产出物
+- 在 `docs/prd/{feature_id}/` 下创建完整 PRD 目录前，必须先扫描 `docs/prd/.demo-feature/` 的完整文件清单对齐产出物
 - PRD 目录应包含：
   - `PRD.md`
   - `预览PRD-macOS.command`

@@ -135,10 +135,8 @@ vim .codex/config.toml         # 取消注释并填入 MCP API Key
 
 ### 3. 体验双视窗 PRD 演示
 
-```bash
-cd docs/prd/demo-feature/
-./preview.sh
-```
+- macOS：在 Finder 中双击 `docs/prd/.demo-feature/预览PRD-macOS.command`
+- Windows：双击 `docs/prd/.demo-feature/预览PRD-Windows.bat`
 
 ### 4. 开始你的第一个需求
 

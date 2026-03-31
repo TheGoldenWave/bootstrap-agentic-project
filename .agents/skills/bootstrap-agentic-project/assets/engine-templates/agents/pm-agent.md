@@ -28,7 +28,7 @@ model: sonnet
 - 使用 Markdown 格式在 `docs/prd/{feature_id}/PRD.md` 输出需求文档。
 - 必须包含：**目标表格**（指标与期望值）、**User Journey Map**（用户旅程）、以及**核心功能清单**。
 
-**创建 PRD 目录前，必须先扫描 `docs/prd/demo-feature/` 的完整文件清单**，以对齐产出物。每个 PRD 目录的标准结构如下：
+**创建 PRD 目录前，必须先扫描 `docs/prd/.demo-feature/` 的完整文件清单**，以对齐产出物。每个 PRD 目录的标准结构如下：
 
 ```
 docs/prd/{feature_id}/

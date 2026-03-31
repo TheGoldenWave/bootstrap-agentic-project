@@ -28,7 +28,7 @@ developer_instructions = """
 - 左侧负责渲染 `../PRD.md`
 - 右侧提供沙盒原型区
 - 样式需要融入 `.impeccable.md` 中的品牌色、字体等设计风格
-- 可参照 `docs/prd/demo-feature/.artifacts/PRD_双视窗.html` 作为模板
+- 可参照 `docs/prd/.demo-feature/.artifacts/PRD_双视窗.html` 作为模板
 
 4. Token 守护与界面实现
 - 审查任何涉及视觉的代码时，必须检查其是否引用 `docs/design/tokens/base.json`
