@@ -1,0 +1,230 @@
+# Bootstrap Agentic Project Skill 🚀
+
+这是一个为 **Claude Code** 和 **Codex CLI** 深度定制的"Agentic Engineering（智能体研发引擎）"项目初始化技能。它可以帮助研发团队**一键**将当前的代码仓库转化为拥有 **多角色子 Agent 团队**、**项目级隔离环境** 和 **完美兼容 ECC (Everything-Claude-Code)** 的标准化 AI 协同工作区。
+
+## ✨ 核心特性
+
+- 🤖 **开箱即用的基础 Agent 团队**：内置五大专职角色（PM、Dev、Architect、UI、QA），覆盖完整的产品研发链路。
+- 🔄 **双引擎兼容**：同一个项目同时兼容 **Claude Code**（`.claude/`）和 **Codex CLI**（`.codex/`），无缝切换。
+- 🛡️ **可工作的 Hook 护栏（Claude Code）**：`console.log` 自动拦截（PreToolUse）+ 进度存档提醒（Stop）+ 会话记忆恢复（SessionStart）。
+- 📜 **Codex 默认指令护栏**：模板默认不启用 Codex hooks，先通过指令约束实现基础安全规范；如需更强自动化，可再补 `.codex/hooks/hooks.json`。
+- 🔌 **项目专属 MCP 容器**：Claude Code 使用 `mcp-servers.json`，Codex CLI 使用 `.codex/config.toml`，`.gitignore` 自动保护 API Key。
+- 🧠 **防失忆机制（跨会话记忆）**：`process.txt` 状态存档 + Claude Code SessionStart Hook 自动恢复 + Codex `developer_instructions` 持续提醒。
+- 🎨 **Design as Code 基础设施**：内置 `docs/design/tokens/base.json` 基准 Token 文件，所有颜色/间距/字号禁止硬编码。
+- 🎭 **"所见即所得"的双视窗 PRD 架构**：内置 `PRD_双视窗.html` 模板，左侧实时渲染 Markdown 需求（支持 **Mermaid** + **PlantUML**），右侧内嵌可交互 UI 组件沙盒。
+- 🔄 **完全幂等**：重复运行不会覆盖任何已有文件，安全追加而非覆盖。
+
+---
+
+## 📂 Skill 源码目录结构
+
+```text
+bootstrap-agentic-project/
+├── SKILL.md                          # 核心技能定义，供 Claude Code 读取并触发
+├── README.md                         # 本文档
+├── scripts/
+│   └── init.sh                       # 核心的自动化初始化脚本（幂等）
+├── .agents/                          # Codex 技能自发现目录
+│   └── skills/
+│       └── bootstrap-agentic-project/
+│           ├── SKILL.md              # Codex 技能入口
+│           ├── scripts/init.sh       # 自包含初始化脚本
+│           ├── assets/               # 初始化所需模板资源
+│           ├── references/           # 技能参考文档
+│           └── agents/openai.yaml    # Codex 界面元数据
+├── assets/
+│   ├── root-templates/
+│   │   └── AGENTS.md                 # 全局路由（Claude Code + Codex 通用）
+│   ├── docs-templates/
+│   │   ├── INDEX.md                  # 知识库索引
+│   │   └── prd-demo/                 # 双视窗 PRD 示例（含 preview.sh）
+│   ├── engine-templates/             # Claude Code 引擎模板
+│   │   ├── agents/                   # 五大子 Agent 角色定义（.md）
+│   │   │   ├── pm-agent.md
+│   │   │   ├── dev-agent.md
+│   │   │   ├── architect-agent.md
+│   │   │   ├── ui-agent.md
+│   │   │   └── qa-agent.md
+│   │   ├── commands/prd.md           # /prd 快捷指令
+│   │   ├── contexts/                 # dev.md, review.md 动态 Prompt
+│   │   ├── rules/common/coding-style.md
+│   │   ├── scripts/hooks/            # check-console-log.js, session-start.js, session-stop.js
+│   │   ├── design/tokens/base.json   # Design Token 基准
+│   │   ├── settings.json             # Hook 配置模板（含 {{ENGINE_DIR}} 占位符）
+│   │   └── mcp-servers.json          # 项目级 MCP 注册表示例
+│   └── codex-templates/              # Codex CLI 引擎模板
+│       ├── config.toml               # 运行时配置（模型/沙箱/MCP/多 Agent）
+│       ├── AGENTS.md                 # Codex 专属补充说明
+│       └── agents/                   # 五大子 Agent 角色定义（.toml）
+│           ├── pm.toml
+│           ├── dev.toml
+│           ├── architect.toml
+│           ├── ui.toml
+│           └── qa.toml
+└── references/
+    └── agentic-engineering-guide.md
+```
+
+---
+
+## 🏗️ 注入目标项目的结构
+
+```text
+your-target-project/
+├── AGENTS.md                    # 全局路由、角色分工（唯一事实来源）
+├── CLAUDE.md -> AGENTS.md       # 软链接，与 AGENTS.md 始终同步
+├── .gitignore                   # 自动保护 mcp-servers.json 和 .codex/config.toml
+│
+├── .claude/                     # Claude Code 引擎底座
+│   ├── settings.json            # Hook 配置（SessionStart + PreToolUse + Stop）
+│   ├── mcp-servers.json         # 项目专属 MCP（已加入 .gitignore）
+│   ├── agents/                  # pm, dev, architect, ui, qa（.md 格式）
+│   ├── commands/                # /prd 等快捷指令
+│   ├── contexts/                # dev.md, review.md 动态 Prompt
+│   ├── rules/common/            # coding-style.md 全局规范
+│   └── scripts/hooks/           # check-console-log.js, session-start.js, session-stop.js
+│
+├── .codex/                      # Codex CLI 引擎底座
+│   ├── config.toml              # 运行时配置（已加入 .gitignore）
+│   ├── AGENTS.md                # Codex 专属补充说明
+│   └── agents/                  # pm.toml, dev.toml ... 五大角色（.toml 格式）
+│
+├── .agents/                     # Codex 技能自动发现目录
+│   └── skills/                  # 已安装的技能包（SKILL.md + openai.yaml）
+│
+├── docs/
+│   ├── context/INDEX.md         # 🧠 知识库索引
+│   ├── prd/{feature_id}/        # 🧑‍💼 PRD.md, process.txt, notes.md
+│   └── design/tokens/base.json  # 🎨 Design Token 基准
+│
+├── tests/specs/                 # 🕵️ 验收测试
+└── src/                         # 👨‍💻 业务代码
+```
+
+---
+
+## 🛠️ 如何使用本 Skill
+
+### 1. 触发初始化
+
+**Claude Code：**
+```
+使用 Bootstrap Agentic Project 技能初始化当前项目
+```
+
+**Codex CLI：**
+```text
+在提示中显式提及 `bootstrap-agentic-project`，或通过 `/skills` / `$bootstrap-agentic-project` 调用此技能
+```
+
+脚本会自动检测已有的目录结构（幂等，安全重复运行）。
+
+### 2. 填写 MCP 配置（重要）
+
+**Claude Code：**
+```bash
+vim .claude/mcp-servers.json   # 填入 TAPD/GitHub API Key
+```
+
+**Codex CLI：**
+```bash
+vim .codex/config.toml         # 取消注释并填入 MCP API Key
+```
+
+> 两个文件已自动加入 `.gitignore`，不会意外提交 API Key。
+
+### 3. 体验双视窗 PRD 演示
+
+```bash
+cd docs/prd/demo-feature/
+./preview.sh
+```
+
+### 4. 开始你的第一个需求
+
+**Claude Code：**
+```
+/prd 我想做一个用户登录页面
+```
+
+**Codex CLI：**
+```
+/agent pm 我想做一个用户登录页面
+```
+
+pm-agent 会通过对话式追问帮你细化需求，最终生成结构化的双视窗 PRD。
+
+---
+
+## 👥 五大 Agent 角色
+
+| Agent | 核心职责 | Claude Code 调用 | Codex CLI 调用 |
+|-------|---------|----------------|--------------|
+| `pm-agent` | 需求澄清、PRD 撰写、敏捷七步法 | `/prd [需求]` | `/agent pm [需求]` |
+| `dev-agent` | 业务代码实现、TDD 开发循环 | 直接 @提及 | `/agent dev [任务]` |
+| `architect-agent` | Code Review（不写 CRUD）、架构设计 | 直接 @提及 | `/agent architect [审查]` |
+| `ui-agent` | Design Token 解析、界面还原度把控 | 直接 @提及 | `/agent ui [任务]` |
+| `qa-agent` | BDD 测试用例、质量评估 | 直接 @提及 | `/agent qa [测试]` |
+
+---
+
+## ⚙️ Hook 说明（Claude Code 专属）
+
+本 Skill 注册了三条 **有效的** Claude Code Hooks（格式符合官方 `settings.json` 规范）：
+
+### `session-start.js`（SessionStart）
+- 会话开始时扫描 `docs/prd/` 下所有 `process.txt` 文件
+- 通过 stdout JSON `{ hookSpecificOutput: { hookEventName, additionalContext } }` 注入上下文
+- 自动恢复跨会话记忆，无需手动读取
+
+### `check-console-log.js`（PreToolUse / Edit）
+- 在每次 Edit 工具写入 `.ts/.tsx/.js/.jsx` 时触发
+- 从 stdin 读取 JSON 工具输入，提取 `tool_input.new_string` 检测 `console.log`
+- 发现后 exit 2，**阻止** 本次编辑并向 Claude 注入错误说明
+
+### `session-stop.js`（Stop）
+- 在 Claude 即将结束回复时触发
+- 首次触发（`stop_hook_active: false`）：exit 2，注入进度存档提醒，迫使 Claude 先保存再结束
+- 二次触发（`stop_hook_active: true`）：exit 0，避免无限循环
+
+---
+
+## 🔷 Codex CLI 多 Agent 支持
+
+`.codex/config.toml` 中预配置了 5 个角色，通过 Codex 内置的多 Agent 框架运行：
+
+```toml
+[features]
+multi_agent = true
+
+[agents.pm]
+description = "产品经理：需求澄清、PRD 撰写"
+config_file = "agents/pm.toml"
+# ... 其余 4 个角色
+```
+
+启动子 Agent（这是子 Agent，不是技能调用）：
+```
+/agent pm 帮我写一个用户登录功能的 PRD
+```
+
+---
+
+## 🔌 ECC (Everything-Claude-Code) 兼容性
+
+当项目中存在 `.claude-plugin/plugin.json`（ECC 安装标志）时，`init.sh` 会自动检测并：
+1. 保持使用 `.claude/` 作为引擎目录（与 ECC 共存）
+2. 发出警告，提示检查 Hook 重复（ECC 的 `hooks/hooks.json` 和 bootstrap 的 `settings.json` 均会激活）
+3. 建议合并重复的 Hook 逻辑
+
+---
+
+## 💡 最佳实践
+
+- **Git 协同**：将 `.claude/`（不含 `mcp-servers.json`）和 `.codex/`（不含 `config.toml`）提交到 Git，团队成员拉取后即获得一致的 Agent 团队配置。
+- **保护密钥**：`mcp-servers.json` 和 `.codex/config.toml` 含 API Key，**不要提交**。init.sh 已自动将其加入 `.gitignore`。
+- **幂等性**：重复运行 init.sh 是安全的。所有文件操作均为"不存在则创建，存在则跳过"。
+- **AGENTS.md / CLAUDE.md 同步**：`CLAUDE.md` 是 `AGENTS.md` 的软链接，编辑任意一方（手动、AI 工具、任何编辑器）都天然同步，无需额外维护。
+- **contexts/ 激活方式**：在任务开始时告知 Agent "请进入开发模式" 或 "请进入 Review 模式"，Agent 会主动读取对应的 Context 文件。
+
+Enjoy your Vibe Coding! 🎉
