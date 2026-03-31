@@ -46,7 +46,9 @@ docs/prd/{feature_id}/
 启动脚本模板——macOS（`预览PRD-macOS.command`，创建后执行 `chmod +x`）：
 ```bash
 #!/bin/bash
-cd "$(dirname "$0")/.artifacts" || { echo "❌ 找不到 .artifacts 目录"; exit 1; }
+# 服务器根目录必须设为本脚本所在目录（PRD 目录），
+# 这样 HTML 中的 fetch('../PRD.md') 才能通过 HTTP 正常访问上级文件。
+cd "$(dirname "$0")" || { echo "❌ 找不到 PRD 目录"; exit 1; }
 PORT=8080
 if command -v npx &>/dev/null; then
     npx serve -l $PORT >/dev/null 2>&1 &
@@ -57,8 +59,8 @@ elif command -v python &>/dev/null; then
 else
     echo "❌ 未找到 Node.js 或 Python，请先安装其中之一。"; exit 1
 fi
-sleep 1
-open "http://localhost:${PORT}/PRD_双视窗.html"
+sleep 2
+open "http://localhost:${PORT}/.artifacts/PRD_双视窗.html"
 echo "💡 按 [Ctrl+C] 停止服务器"
 trap "kill %1 2>/dev/null; exit" INT
 wait
@@ -68,7 +70,9 @@ wait
 ```batch
 @echo off
 chcp 65001 >nul
-cd /d "%~dp0.artifacts"
+REM 服务器根目录必须设为本脚本所在目录（PRD 目录），
+REM 这样 HTML 中的 fetch('../PRD.md') 才能通过 HTTP 正常访问上级文件。
+cd /d "%~dp0"
 SET PORT=8080
 where python >nul 2>&1
 IF %ERRORLEVEL%==0 (
@@ -80,7 +84,7 @@ IF %ERRORLEVEL%==0 (
     )
 )
 timeout /t 2 /nobreak >nul
-start "" http://localhost:%PORT%/PRD_双视窗.html
+start "" http://localhost:%PORT%/.artifacts/PRD_双视窗.html
 echo ✅ 预览已在浏览器打开 & pause
 ```
 

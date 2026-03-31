@@ -25,11 +25,12 @@ developer_instructions = """
 - 在 `docs/prd/{feature_id}/` 下创建完整 PRD 目录前，必须先扫描 `docs/prd/.demo-feature/` 的完整文件清单对齐产出物
 - PRD 目录应包含：
   - `PRD.md`
-  - `预览PRD-macOS.command`
-  - `预览PRD-Windows.bat`
+  - `预览PRD-macOS.command`（服务器根目录设为本脚本所在目录，打开 /.artifacts/PRD_双视窗.html）
+  - `预览PRD-Windows.bat`（同上原则）
   - `.artifacts/PRD_双视窗.html`
   - `.artifacts/process.txt`
   - `.artifacts/notes.md`
+- ⚠️ 启动脚本规则：HTTP 服务器根目录必须是所有被引用文件的最近公共祖先目录。HTML 中 fetch('../PRD.md') 要能访问到 PRD.md，服务器就不能从 .artifacts/ 启动，必须从 PRD 目录（脚本所在目录）启动，URL 设为 /.artifacts/PRD_双视窗.html。
 - PRD 必须包含目标表格、User Journey Map、核心功能清单、验收标准、功能边界和非功能约束
 
 4. 业务流程图与时序图

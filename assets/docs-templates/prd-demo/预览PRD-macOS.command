@@ -1,14 +1,14 @@
 #!/bin/bash
 # 预览PRD-macOS.command — 双击即可在浏览器预览 PRD 双视窗
-# 服务从 .artifacts/ 目录启动，PRD.md 通过 ../PRD.md 路径加载
+# 服务器根目录设为 PRD 目录（本脚本所在目录），确保 fetch('../PRD.md') 可以正常访问
 
-cd "$(dirname "$0")/.artifacts" || {
-    echo "❌ 找不到 .artifacts 目录，请确认文件结构完整。"
+cd "$(dirname "$0")" || {
+    echo "❌ 找不到 PRD 目录，请确认文件结构完整。"
     exit 1
 }
 
 PORT=8080
-HTML_FILE="PRD_双视窗.html"
+HTML_FILE=".artifacts/PRD_双视窗.html"
 
 echo "🚀 正在启动 PRD 双视窗预览服务..."
 
@@ -26,7 +26,7 @@ else
     exit 1
 fi
 
-sleep 1
+sleep 2
 
 echo "✅ 服务已启动，正在打开浏览器..."
 open "http://localhost:${PORT}/${HTML_FILE}"

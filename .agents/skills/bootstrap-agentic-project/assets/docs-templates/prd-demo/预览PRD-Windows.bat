@@ -1,17 +1,17 @@
 @echo off
 chcp 65001 >nul
 REM 预览PRD-Windows.bat — 双击即可在浏览器预览 PRD 双视窗
-REM 服务从 .artifacts\ 目录启动，PRD.md 通过 ../PRD.md 路径加载
+REM 服务器根目录设为 PRD 目录（本脚本所在目录），确保 fetch('../PRD.md') 可以正常访问
 
-cd /d "%~dp0.artifacts"
-IF NOT EXIST "PRD_双视窗.html" (
-    echo ❌ 找不到 .artifacts 目录或 PRD_双视窗.html，请确认文件结构完整。
+cd /d "%~dp0"
+IF NOT EXIST ".artifacts\PRD_双视窗.html" (
+    echo ❌ 找不到 .artifacts\PRD_双视窗.html，请确认文件结构完整。
     pause
     exit /b 1
 )
 
 SET PORT=8080
-SET HTML_FILE=PRD_双视窗.html
+SET HTML_FILE=.artifacts/PRD_双视窗.html
 
 echo 🚀 正在启动 PRD 双视窗预览服务...
 
