@@ -36,7 +36,7 @@ docs/prd/{feature_id}/
 ├── 预览PRD-macOS.command     ← macOS 双击启动预览（可执行）
 ├── 预览PRD-Windows.bat       ← Windows 双击启动预览
 └── .artifacts/               ← AI Agent 维护，人不用管
-    ├── PRD_双视窗.html
+    ├── PRD_dual-pane.html
     ├── process.txt
     └── notes.md
 ```
@@ -60,7 +60,7 @@ else
     echo "❌ 未找到 Node.js 或 Python，请先安装其中之一。"; exit 1
 fi
 sleep 2
-open "http://localhost:${PORT}/.artifacts/PRD_双视窗.html"
+open "http://localhost:${PORT}/.artifacts/PRD_dual-pane.html"
 echo "💡 按 [Ctrl+C] 停止服务器"
 trap "kill %1 2>/dev/null; exit" INT
 wait
@@ -84,7 +84,7 @@ IF %ERRORLEVEL%==0 (
     )
 )
 timeout /t 2 /nobreak >nul
-start "" http://localhost:%PORT%/.artifacts/PRD_双视窗.html
+start "" http://localhost:%PORT%/.artifacts/PRD_dual-pane.html
 echo ✅ 预览已在浏览器打开 & pause
 ```
 
@@ -92,20 +92,20 @@ echo ✅ 预览已在浏览器打开 & pause
 - 作为高级 PM，你必须熟练使用图表表达复杂逻辑。
 - 描述交互流转和页面分支时，**必须**使用 ` ```mermaid ` (flowchart TD) 语法。
 - 描述前后端数据交互、跨系统鉴权等底层逻辑时，**必须**使用 ` ```plantuml ` 语法绘制时序图 (@startuml ... @enduml)。
-- （系统会在 `.artifacts/PRD_双视窗.html` 中自动渲染这些图表）。
+- （系统会在 `.artifacts/PRD_dual-pane.html` 中自动渲染这些图表）。
 
 ### 5. 移交 UI Agent 完成设计规范与双视窗 PRD (Hand-off)
 PRD 第一版完成后，**必须完成以下移交动作**：
 
 1. 检查项目根目录是否存在 `.impeccable.md`。
 2. 不论是否存在，都需要向用户说明下一步，并主动建议移交 @ui-agent：
-   - **若 `.impeccable.md` 不存在**（新项目）：告知用户"建议 @ui-agent 依次完成：① 运行 `teach-impeccable` 建立设计规范 ② 基于设计规范创建 `.artifacts/PRD_双视窗.html`"
-   - **若 `.impeccable.md` 已存在**（迭代需求）：告知用户"建议 @ui-agent 直接基于现有设计规范创建 `.artifacts/PRD_双视窗.html`"
+   - **若 `.impeccable.md` 不存在**（新项目）：告知用户"建议 @ui-agent 依次完成：① 运行 `teach-impeccable` 建立设计规范 ② 基于设计规范创建 `.artifacts/PRD_dual-pane.html`"
+   - **若 `.impeccable.md` 已存在**（迭代需求）：告知用户"建议 @ui-agent 直接基于现有设计规范创建 `.artifacts/PRD_dual-pane.html`"
 
 > **ui-agent 职责说明**：
 > - `teach-impeccable` 会将设计规范写入项目根目录的 `.impeccable.md`（dotfile，保留在根目录即可，不要移动）。
 > - ui-agent 应将 `.impeccable.md` 中的具体 Token 值（颜色、字号、间距等）同步写入 `docs/design/tokens/base.json`，保持设计目录权威性。
-> - ui-agent 创建 `.artifacts/PRD_双视窗.html` 时，应将 `.impeccable.md` 的设计风格融入双视窗的样式中。
+> - ui-agent 创建 `.artifacts/PRD_dual-pane.html` 时，应将 `.impeccable.md` 的设计风格融入双视窗的样式中。
 
 ### 6. 防失忆状态存档 (State Saving)
 - **强制指令**：在每一次关键会话结束前，或者完成一个里程碑后，你**必须**将当前的进度写入 `docs/prd/{feature_id}/.artifacts/process.txt`，并将发现的业务坑点写入 `.artifacts/notes.md`，以防跨会话上下文丢失。

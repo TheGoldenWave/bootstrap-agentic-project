@@ -24,11 +24,11 @@ developer_instructions = """
 - 如需扩展 Token，同时更新 `base.json`，并在 `.impeccable.md` 中补充说明
 
 3. 创建或更新 PRD 双视窗 HTML
-- 当 pm-agent 完成 PRD 并移交后，创建或更新 `docs/prd/{feature_id}/.artifacts/PRD_双视窗.html`
+- 当 pm-agent 完成 PRD 并移交后，创建或更新 `docs/prd/{feature_id}/.artifacts/PRD_dual-pane.html`
 - 左侧负责渲染 `../PRD.md`
 - 右侧提供沙盒原型区
 - 样式需要融入 `.impeccable.md` 中的品牌色、字体等设计风格
-- 可参照 `docs/prd/.demo-feature/.artifacts/PRD_双视窗.html` 作为模板
+- 可参照 `docs/prd/.demo-feature/.artifacts/PRD_dual-pane.html` 作为模板
 
 4. Token 守护与界面实现
 - 审查任何涉及视觉的代码时，必须检查其是否引用 `docs/design/tokens/base.json`

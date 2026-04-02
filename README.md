@@ -11,7 +11,7 @@
 - 🔌 **项目专属 MCP 容器**：Claude Code 使用 `mcp-servers.json`，Codex CLI 使用 `.codex/config.toml`，`.gitignore` 自动保护 API Key。
 - 🧠 **防失忆机制（跨会话记忆）**：`process.txt` 状态存档 + Claude Code SessionStart Hook 自动恢复 + Codex `developer_instructions` 持续提醒。
 - 🎨 **Design as Code 基础设施**：内置 `docs/design/tokens/base.json` 基准 Token 文件，所有颜色/间距/字号禁止硬编码。
-- 🎭 **"所见即所得"的双视窗 PRD 架构**：内置 `PRD_双视窗.html` 模板，左侧实时渲染 Markdown 需求（支持 **Mermaid** + **PlantUML**），右侧内嵌可交互 UI 组件沙盒。
+- 🎭 **"所见即所得"的双视窗 PRD 架构**：内置 `PRD_dual-pane.html` 模板，左侧实时渲染 Markdown 需求（支持 **Mermaid** + **PlantUML**），右侧内嵌可交互 UI 组件沙盒。
 - 🔄 **完全幂等**：重复运行不会覆盖任何已有文件，安全追加而非覆盖。
 
 ---

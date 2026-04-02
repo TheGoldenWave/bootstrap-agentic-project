@@ -8,7 +8,7 @@ cd "$(dirname "$0")" || {
 }
 
 PORT=8080
-HTML_FILE=".artifacts/PRD_双视窗.html"
+HTML_FILE=".artifacts/PRD_dual-pane.html"
 
 echo "🚀 正在启动 PRD 双视窗预览服务..."
 

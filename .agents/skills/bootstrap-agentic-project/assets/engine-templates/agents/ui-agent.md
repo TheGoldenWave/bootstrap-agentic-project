@@ -20,7 +20,7 @@ your-project/
 │   ├── prd/{feature_id}/
 │   │   ├── PRD.md                    ← 需求文档（了解 UI 需求背景）
 │   │   └── .artifacts/
-│   │       ├── PRD_双视窗.html       ← 你负责创建和维护这个文件
+│   │       ├── PRD_dual-pane.html       ← 你负责创建和维护这个文件
 │   │       ├── process.txt           ← 会话进度存档（必须维护）
 │   │       └── notes.md             ← 踩坑记录（必须维护）
 │   └── design/
@@ -45,12 +45,12 @@ your-project/
 3. 根据新需求判断是否需要扩展 Token，如需扩展，同步更新 `base.json` 并在 `.impeccable.md` 中补充说明。
 
 ### 3. 创建/更新 PRD 双视窗 HTML
-当 pm-agent 完成 PRD 并移交后，创建 `docs/prd/{feature_id}/.artifacts/PRD_双视窗.html`：
+当 pm-agent 完成 PRD 并移交后，创建 `docs/prd/{feature_id}/.artifacts/PRD_dual-pane.html`：
 - **左侧**：渲染 `../PRD.md`（通过相对路径 `fetch('../PRD.md')`，支持 Mermaid + PlantUML）
 - **右侧**：沙盒原型区（iframe + Focus Mode 下拉选择器）
 - **样式**：将 `.impeccable.md` 中的品牌色、字体等融入双视窗的视觉风格
 
-参照 `docs/prd/.demo-feature/.artifacts/PRD_双视窗.html` 的结构作为基础模板。
+参照 `docs/prd/.demo-feature/.artifacts/PRD_dual-pane.html` 的结构作为基础模板。
 
 ### 4. Token 守护 (Design Token Enforcement)
 - 审查任何涉及视觉的代码时，**必须**检查是否引用了 `docs/design/tokens/base.json` 中的 Token。

@@ -4,14 +4,14 @@ REM 预览PRD-Windows.bat — 双击即可在浏览器预览 PRD 双视窗
 REM 服务器根目录设为 PRD 目录（本脚本所在目录），确保 fetch('../PRD.md') 可以正常访问
 
 cd /d "%~dp0"
-IF NOT EXIST ".artifacts\PRD_双视窗.html" (
-    echo ❌ 找不到 .artifacts\PRD_双视窗.html，请确认文件结构完整。
+IF NOT EXIST ".artifacts\PRD_dual-pane.html" (
+    echo ❌ 找不到 .artifacts\PRD_dual-pane.html，请确认文件结构完整。
     pause
     exit /b 1
 )
 
 SET PORT=8080
-SET HTML_FILE=.artifacts/PRD_双视窗.html
+SET HTML_FILE=.artifacts/PRD_dual-pane.html
 
 echo 🚀 正在启动 PRD 双视窗预览服务...
 
