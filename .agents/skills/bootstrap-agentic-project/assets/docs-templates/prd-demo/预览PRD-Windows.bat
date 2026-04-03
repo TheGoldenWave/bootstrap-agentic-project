@@ -12,20 +12,56 @@ IF NOT EXIST ".artifacts\PRD_dual-pane.html" (
 
 SET PORT=8080
 SET HTML_FILE=.artifacts/PRD_dual-pane.html
+SET PID_FILE=.artifacts\.server.pid
 
+REM --- 清理残留进程 ---
+IF EXIST "%PID_FILE%" (
+    SET /P OLD_PID=<"%PID_FILE%"
+    IF DEFINED OLD_PID (
+        echo 🧹 正在停止上次残留的服务器 (PID: %OLD_PID%)...
+        taskkill /PID %OLD_PID% /F >nul 2>&1
+    )
+    del /f "%PID_FILE%" >nul 2>&1
+)
+
+REM 兜底：检查端口是否仍被占用并清理
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":%PORT% " ^| findstr "LISTENING" 2^>nul') do (
+    if not "%%a"=="0" (
+        echo 🧹 端口 %PORT% 仍被占用 (PID: %%a)，正在清理...
+        taskkill /PID %%a /F >nul 2>&1
+    )
+)
+
+REM --- 启动服务器 ---
 echo 🚀 正在启动 PRD 双视窗预览服务...
 
 where python >nul 2>&1
 IF %ERRORLEVEL%==0 (
     echo 🐍 使用 Python 启动...
-    start "" python -m http.server %PORT%
+    start "" /B python -m http.server %PORT% >nul 2>&1
+    REM 获取 python 服务器 PID
+    for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":%PORT% " ^| findstr "LISTENING" 2^>nul') do (
+        echo %%a> "%PID_FILE%"
+        goto :open
+    )
+    REM 等待服务器启动后重试获取 PID
+    timeout /t 2 /nobreak >nul
+    for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":%PORT% " ^| findstr "LISTENING" 2^>nul') do (
+        echo %%a> "%PID_FILE%"
+        goto :open
+    )
     goto :open
 )
 
 where npx >nul 2>&1
 IF %ERRORLEVEL%==0 (
     echo 📦 使用 npx serve 启动...
-    start "" npx serve -l %PORT%
+    start "" /B npx serve -l %PORT% >nul 2>&1
+    timeout /t 3 /nobreak >nul
+    for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":%PORT% " ^| findstr "LISTENING" 2^>nul') do (
+        echo %%a> "%PID_FILE%"
+        goto :open
+    )
     goto :open
 )
 
@@ -37,4 +73,15 @@ exit /b 1
 timeout /t 2 /nobreak >nul
 start "" http://localhost:%PORT%/%HTML_FILE%
 echo ✅ 预览已在浏览器打开。关闭此窗口将停止服务器。
-pause
+echo.
+echo 💡 按任意键停止服务器并退出
+pause >nul
+
+REM --- 退出时清理 ---
+IF EXIST "%PID_FILE%" (
+    SET /P SERVER_PID=<"%PID_FILE%"
+    IF DEFINED SERVER_PID (
+        taskkill /PID %SERVER_PID% /F >nul 2>&1
+    )
+    del /f "%PID_FILE%" >nul 2>&1
+)
