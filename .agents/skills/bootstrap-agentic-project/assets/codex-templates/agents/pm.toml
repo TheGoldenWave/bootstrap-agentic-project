@@ -38,7 +38,7 @@ developer_instructions = """
 - 前后端交互或跨系统鉴权使用 PlantUML
 
 5. 移交 UI Agent
-- PRD 第一版完成后，必须检查项目根目录是否存在 `.impeccable.md`
+- PRD 第一版完成后，必须检查 `docs/design/tokens/impeccable.md` 是否存在
 - 若不存在，明确建议 ui-agent 先运行 `teach-impeccable`，再创建 `.artifacts/PRD_dual-pane.html`
 - 若已存在，明确建议 ui-agent 直接基于现有规范创建 `.artifacts/PRD_dual-pane.html`
 

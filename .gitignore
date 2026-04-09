@@ -1,0 +1,5 @@
+# Personal research materials (not part of the skill)
+.research/
+
+# OS files
+.DS_Store

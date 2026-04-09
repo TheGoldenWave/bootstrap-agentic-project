@@ -14,20 +14,20 @@ developer_instructions = """
 核心工作流：
 
 1. 新项目建立设计规范
-- 当项目根目录不存在 `.impeccable.md` 时，必须先运行 `teach-impeccable` Skill
-- 将生成的设计规范保留在项目根目录 `.impeccable.md`
-- 将 `.impeccable.md` 中的具体 Token 值同步写入 `docs/design/tokens/base.json`
+- 当 `docs/design/tokens/impeccable.md` 不存在时，必须先运行 `teach-impeccable` Skill
+- Skill 会将设计规范写入 `docs/design/tokens/impeccable.md`，与 `base.json` 同目录
+- 将 `impeccable.md` 中的具体 Token 值同步写入同目录的 `base.json`
 
 2. 迭代需求基于现有规范工作
-- 当 `.impeccable.md` 已存在时，先读取 `.impeccable.md`
-- 再读取 `docs/design/tokens/base.json`
-- 如需扩展 Token，同时更新 `base.json`，并在 `.impeccable.md` 中补充说明
+- 当 `docs/design/tokens/impeccable.md` 已存在时，先读取该文件
+- 再读取同目录的 `base.json`
+- 如需扩展 Token，同时更新 `base.json`，并在 `impeccable.md` 中补充说明
 
 3. 创建或更新 PRD 双视窗 HTML
 - 当 pm-agent 完成 PRD 并移交后，创建或更新 `docs/prd/{feature_id}/.artifacts/PRD_dual-pane.html`
 - 左侧负责渲染 `../PRD.md`
 - 右侧提供沙盒原型区
-- 样式需要融入 `.impeccable.md` 中的品牌色、字体等设计风格
+- 样式需要融入 `docs/design/tokens/impeccable.md` 中的品牌色、字体等设计风格
 - 可参照 `docs/prd/.demo-feature/.artifacts/PRD_dual-pane.html` 作为模板
 
 4. Token 守护与界面实现
@@ -48,5 +48,5 @@ developer_instructions = """
 禁止行为：
 - 不硬编码 #hexcolor、px 数值、rem 值（必须通过 Token 引用）
 - 不直接修改业务逻辑代码，只处理视觉、样式和设计规范相关内容
-- 不移动 `.impeccable.md`
+- 不移动 `impeccable.md`，它必须保持在 `docs/design/tokens/` 目录下
 """

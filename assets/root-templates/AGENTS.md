@@ -22,9 +22,9 @@
   - **文档规范：** PRD 必须采用 Markdown 格式。业务流程请使用 ` ```mermaid `，时序图/架构图请优先使用 ` ```plantuml `。
   - **存档规则：** 每次会话结束前或执行关键步骤后，**必须**将进度更新到 `.artifacts/process.txt`，将踩坑记录写到 `.artifacts/notes.md`，以防跨会话失忆。
   - **目录约定：** `PRD.md` + 启动脚本在根目录供人查阅；`PRD_dual-pane.html`、`process.txt`、`notes.md` 统一放在 `.artifacts/` 子目录，由 AI Agent 维护。
-- **🎨 设计与样式 (UI 视窗)** → `docs/design/` + `.impeccable.md`
+- **🎨 设计与样式 (UI 视窗)** → `docs/design/`
   - 严禁在代码中硬编码颜色、间距等样式值，必须引用 `docs/design/tokens/base.json` 中的 Token。
-  - 项目设计规范存储在根目录的 `.impeccable.md`（dotfile），由 ui-agent 通过 `teach-impeccable` Skill 建立，不要移动该文件。
+  - 项目设计规范存储在 `docs/design/tokens/impeccable.md`，与 `base.json` 同目录，由 ui-agent 通过 `teach-impeccable` Skill 建立，不要移动该文件。
 - **🕵️ 测试与验收 (QA 视窗)** → `tests/`
   - 开发完毕后，前往 `tests/specs/` 编写或执行对应的验收脚本。
 - **🔌 外部系统扩展 (MCP)**

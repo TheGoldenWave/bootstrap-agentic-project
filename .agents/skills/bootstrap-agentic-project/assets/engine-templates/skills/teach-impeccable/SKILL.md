@@ -64,8 +64,8 @@ Synthesize your findings and the user's answers into a `## Design Context` secti
 [3-5 principles derived from the conversation that should guide all design decisions]
 ```
 
-Write this section to `.impeccable.md` in the project root. If the file already exists, update the Design Context section in place.
+Write this section to `docs/design/tokens/impeccable.md`. If the file already exists, update the Design Context section in place. This location keeps the design spec co-located with the Design Token system (`base.json`), forming a single source of truth for all visual decisions.
 
-Then STOP and call the AskUserQuestion tool to clarify. whether they'd also like the Design Context appended to CLAUDE.md. If yes, append or update the section there as well.
+Then STOP and call the AskUserQuestion tool to clarify whether they'd also like the Design Context appended to CLAUDE.md. If yes, append or update the section there as well.
 
 Confirm completion and summarize the key design principles that will now guide all future work.

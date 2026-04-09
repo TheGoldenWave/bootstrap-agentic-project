@@ -13,7 +13,7 @@ model: sonnet
 ```
 your-project/
 ├── AGENTS.md / CLAUDE.md          ← 全局路由入口（必读）
-├── .impeccable.md                 ← 设计规范（dotfile，ui-agent 维护）
+├── docs/design/tokens/impeccable.md  ← 设计规范（ui-agent 维护，与 base.json 同目录）
 ├── .claude/
 │   ├── contexts/dev.md            ← 开发模式专用 Prompt（进入开发模式时读取）
 │   └── rules/common/coding-style.md  ← 全局编码规范（每次提交前必遵守）
