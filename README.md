@@ -1,5 +1,9 @@
 # Bootstrap Agentic Project Skill 🚀
 
+[![GitHub](https://img.shields.io/github/license/TheGoldenWave/bootstrap-agentic-project)](https://github.com/TheGoldenWave/bootstrap-agentic-project)
+
+**GitHub**: https://github.com/TheGoldenWave/bootstrap-agentic-project
+
 这是一个为 **Claude Code** 和 **Codex CLI** 深度定制的"Agentic Engineering（智能体研发引擎）"项目初始化技能。它可以帮助研发团队**一键**将当前的代码仓库转化为拥有 **多角色子 Agent 团队**、**项目级隔离环境** 和 **完美兼容 ECC (Everything-Claude-Code)** 的标准化 AI 协同工作区。
 
 ## ✨ 核心特性
