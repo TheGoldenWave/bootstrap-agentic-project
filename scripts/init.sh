@@ -288,6 +288,16 @@ if [ -d "${ASSETS_DIR}/engine-templates/skills" ]; then
 fi
 
 # =================================================================
+# 12b. Install /C-startup as a global user-level skill
+# =================================================================
+GLOBAL_SKILLS_DIR="${HOME}/.claude/skills"
+if [ -d "$GLOBAL_SKILLS_DIR" ]; then
+    mkdir -p "${GLOBAL_SKILLS_DIR}/C-startup"
+    safe_copy "${ASSETS_DIR}/engine-templates/skills/C-startup/SKILL.md" "${GLOBAL_SKILLS_DIR}/C-startup/SKILL.md"
+    echo "  🌐 /C-startup available globally at ${GLOBAL_SKILLS_DIR}/C-startup/"
+fi
+
+# =================================================================
 # 13. PM workflow templates
 # =================================================================
 echo ""
