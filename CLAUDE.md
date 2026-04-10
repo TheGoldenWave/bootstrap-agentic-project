@@ -18,10 +18,10 @@ Run from a **target repository's root** (not from this repo). The script is full
 
 ```
 SKILL.md              ← Skill entry point (triggers init.sh via search path)
-scripts/init.sh       ← Core bootstrap script (15 idempotent steps)
+scripts/init.sh       ← Core bootstrap script (16 idempotent steps)
 assets/
   root-templates/     ← AGENTS.md (injected at target root; CLAUDE.md symlinks to it)
-  engine-templates/   ← Everything under .claude/ (agents, hooks, contexts, rules, commands, design tokens, skills)
+  engine-templates/   ← Everything under .claude/ (agents, hooks, contexts, rules, commands, templates, design tokens, skills)
   codex-templates/    ← Everything under .codex/ (config.toml, agent .toml files)
   docs-templates/     ← docs/ scaffolding (INDEX.md, PRD demo with dual-pane viewer)
 references/           ← Conceptual guide (agentic-engineering-guide.md)
@@ -35,7 +35,7 @@ references/           ← Conceptual guide (agentic-engineering-guide.md)
 3. Creates full directory tree (`ENGINE_DIR/`, `.codex/`, `docs/`, `tests/`, `src/`)
 4. Copies `AGENTS.md` to root; creates `CLAUDE.md` as symlink (or appends routing to existing files)
 5. Generates `settings.json` by substituting `{{ENGINE_DIR}}` placeholder in template
-6. Copies 5 agent definitions, slash commands, hook scripts, contexts, rules, design tokens, MCP config, Codex config, 21 design skills, and docs templates
+6. Copies 6 agent definitions, slash commands, PM workflow templates, hook scripts, contexts, rules, design tokens, MCP config, Codex config, 21+ skills (design + prd + progress + C-startup), and docs templates
 7. Protects `mcp-servers.json` and `.codex/config.toml` in `.gitignore`
 
 All file operations use `safe_copy` — skip if destination exists.
@@ -44,7 +44,7 @@ All file operations use `safe_copy` — skip if destination exists.
 
 Located in `assets/engine-templates/scripts/hooks/`:
 
-- **session-start.js** (SessionStart) — scans `docs/prd/**/process.txt`, injects content as context via stdout JSON
+- **session-start.js** (SessionStart) — scans `docs/prd/**/process.txt` and `process.md` (with YAML frontmatter stage extraction), injects content as context via stdout JSON
 - **check-console-log.js** (PreToolUse/Edit) — reads tool input from stdin, blocks edits containing `console.log` in `.ts/.tsx/.js/.jsx` files (exit 2)
 - **session-stop.js** (Stop) — first trigger exits 2 with save-progress reminder; second trigger (`stop_hook_active: true`) exits 0 to break the loop
 
@@ -55,7 +55,10 @@ Only `settings.json` uses the `{{ENGINE_DIR}}` placeholder, resolved by `sed` in
 ## Key Conventions
 
 - `CLAUDE.md` in bootstrapped projects is a **symlink** to `AGENTS.md` — editing either one updates both
-- The 5 agent roles (pm, dev, architect, ui, qa) exist in two formats: `.md` for Claude Code, `.toml` for Codex
+- The 6 agent roles (pm, project-manager, dev, architect, ui, qa) exist in two formats: `.md` for Claude Code, `.toml` for Codex
+- pm-agent supports dual-path workflow: business (confirmation sheet → MRD → PRD) and product-initiated (product brief → PRD)
+- project-manager-agent manages process.md: scheduling, progress tracking, blocker management
 - `mcp-servers.json` and `.codex/config.toml` contain API key placeholders — never commit real values
 - Design tokens live in `docs/design/tokens/base.json` — hardcoded colors/spacing/fonts are prohibited in bootstrapped projects
-- `process.txt` files under `docs/prd/` serve as cross-session memory, auto-loaded by the SessionStart hook
+- `process.txt` and `process.md` files under `docs/prd/` serve as cross-session memory, auto-loaded by the SessionStart hook
+- PM workflow templates (confirmation sheet, MRD, product brief, process board) live in `{ENGINE_DIR}/templates/`

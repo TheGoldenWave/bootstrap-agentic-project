@@ -93,6 +93,7 @@ dirs=(
     "${ENGINE_DIR}/agents"
     "${ENGINE_DIR}/skills"
     "${ENGINE_DIR}/commands"
+    "${ENGINE_DIR}/templates"
     "${ENGINE_DIR}/scripts/hooks"
     "${ENGINE_DIR}/contexts"
     "${ENGINE_DIR}/rules/common"
@@ -100,6 +101,9 @@ dirs=(
     ".agents/skills"
     "docs/context/team"
     "docs/context/project/experience"
+    "docs/context/business"
+    "docs/context/product-initiated"
+    "docs/context/technical"
     "docs/prd/.demo-feature"
     "docs/prd/.demo-feature/.artifacts"
     "docs/design/tokens"
@@ -284,7 +288,14 @@ if [ -d "${ASSETS_DIR}/engine-templates/skills" ]; then
 fi
 
 # =================================================================
-# 13. .agents/skills/ — Codex auto-discovery skills (bootstrap self-install)
+# 13. PM workflow templates
+# =================================================================
+echo ""
+echo "📋 Installing PM workflow templates..."
+safe_copy_dir "${ASSETS_DIR}/engine-templates/templates" "${ENGINE_DIR}/templates"
+
+# =================================================================
+# 14. .agents/skills/ — Codex auto-discovery skills (bootstrap self-install)
 # =================================================================
 echo ""
 echo "📦 Installing .agents/skills/ packages (Codex auto-discovery)..."
@@ -300,7 +311,7 @@ elif [ -f "${SKILL_DIR}/SKILL.md" ]; then
 fi
 
 # =================================================================
-# 14. Docs / PRD demo
+# 15. Docs / PRD demo
 # =================================================================
 echo ""
 echo "📚 Copying docs templates..."
@@ -312,7 +323,7 @@ safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo/.artifacts" "docs/prd/.demo
 chmod +x "docs/prd/.demo-feature/预览PRD-macOS.command" 2>/dev/null || true
 
 # =================================================================
-# 15. .gitignore — protect secrets
+# 16. .gitignore — protect secrets
 # =================================================================
 GITIGNORE=".gitignore"
 if [ -f "$GITIGNORE" ]; then
@@ -358,10 +369,11 @@ echo ""
 echo "📂 Claude Code 引擎目录 : ${ENGINE_DIR}/"
 echo "📂 Codex CLI 引擎目录   : .codex/"
 echo "📦 Codex 技能目录       : .agents/skills/"
-echo "🤖 Agent 团队           : pm-agent, architect-agent, dev-agent, ui-agent, qa-agent"
+echo "🤖 Agent 团队           : pm-agent, project-manager-agent, architect-agent, dev-agent, ui-agent, qa-agent"
 echo "🔗 Claude Hooks         : SessionStart + PreToolUse(Edit) + Stop → ${ENGINE_DIR}/scripts/hooks/"
 echo "🔷 Codex 多 Agent       : [agents.*] in .codex/config.toml"
 echo "🎨 Design Tokens        : docs/design/tokens/base.json"
+echo "📋 PM 工作流模板       : ${ENGINE_DIR}/templates/"
 echo ""
 echo "💡 下一步："
 echo "   1. 检查并填写 ${ENGINE_DIR}/mcp-servers.json 中的 API Key（Claude Code）"
@@ -371,7 +383,10 @@ echo "   4. 体验双视窗 PRD：双击 docs/prd/.demo-feature/预览PRD-macOS.
 echo "                     或  docs/prd/.demo-feature/预览PRD-Windows.bat（Windows）"
 echo ""
 echo "   开始第一个需求："
-echo "   • Claude Code: 输入 /prd [你的初步想法]"
-echo "   • Codex CLI  : 输入 /agent pm [你的初步想法]"
+echo "   • Claude Code: /prd [你的初步想法]        （业务提需：/prd business ...）"
+echo "   • Codex CLI  : /agent pm [你的初步想法]"
+echo "   项目排期管理："
+echo "   • Claude Code: /progress init {feature_id}"
+echo "   • Codex CLI  : /agent project-manager init {feature_id}"
 echo ""
 echo "🚀 Enjoy your Vibe Coding!"

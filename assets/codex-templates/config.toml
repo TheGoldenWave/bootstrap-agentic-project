@@ -80,3 +80,7 @@ config_file = "agents/ui.toml"
 [agents.qa]
 description = "QA 测试工程师：先写验收测试、执行自动化测试并维护质量门禁。"
 config_file = "agents/qa.toml"
+
+[agents.project-manager]
+description = "项目经理：项目排期、进度追踪、阻塞管理和状态报告，不碰需求分析和业务代码。"
+config_file = "agents/project-manager.toml"

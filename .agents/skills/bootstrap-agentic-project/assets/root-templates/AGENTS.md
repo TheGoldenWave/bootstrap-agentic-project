@@ -6,7 +6,7 @@
 > 你的任务是根据此地图**精准寻址（Progressive Disclosure）**，只获取你当前任务最需要的上下文。
 >
 > **🧠 会话恢复指令（每次会话必读）：**
-> 在执行任何任务前，你**必须**首先在 `docs/prd/` 目录下搜索所有 `process.txt` 文件并读取，以恢复上次会话的上下文状态。
+> 在执行任何任务前，你**必须**首先在 `docs/prd/` 目录下搜索所有 `process.txt` 和 `process.md` 文件并读取，以恢复上次会话的上下文状态。
 > （Claude Code 用户：此操作已由 SessionStart Hook 自动完成。Codex 用户：请手动执行。）
 
 ---
@@ -20,8 +20,16 @@
 - **🧑‍💼 业务与需求 (PM 视窗)** → `docs/prd/{feature_id}/`
   - 开发新需求前，必须阅读对应的 `PRD.md`（可通过双击 `预览PRD-macOS.command` / `预览PRD-Windows.bat` 启动双视窗预览）。
   - **文档规范：** PRD 必须采用 Markdown 格式。业务流程请使用 ` ```mermaid `，时序图/架构图请优先使用 ` ```plantuml `。
-  - **存档规则：** 每次会话结束前或执行关键步骤后，**必须**将进度更新到 `.artifacts/process.txt`，将踩坑记录写到 `.artifacts/notes.md`，以防跨会话失忆。
-  - **目录约定：** `PRD.md` + 启动脚本在根目录供人查阅；`PRD_dual-pane.html`、`process.txt`、`notes.md` 统一放在 `.artifacts/` 子目录，由 AI Agent 维护。
+  - **存档规则：** 每次会话结束前或执行关键步骤后，**必须**将进度更新到 `.artifacts/process.md`（含 YAML frontmatter stage 字段），将踩坑记录写到 `.artifacts/notes.md`，以防跨会话失忆。
+  - **目录约定：** `PRD.md` + 启动脚本在根目录供人查阅；`PRD_dual-pane.html`、`process.md`、`notes.md` 统一放在 `.artifacts/` 子目录，由 AI Agent 维护。
+- **📊 项目进度 (PM 视窗)** → `docs/prd/{feature_id}/.artifacts/process.md`
+  - 查看排期：`/progress view {feature_id}`
+  - 更新进度：`/progress update {feature_id}`
+  - 记录阻塞：`/progress block {feature_id} "描述"`
+- **📂 需求上下文** → `docs/context/`
+  - 业务提需：`docs/context/business/{unit}/{req_id}/` — 含原始设想、需求确认单、MRD
+  - 产品自发：`docs/context/product-initiated/{req_id}/` — 含洞察、产品简报
+  - 技术实现：`docs/context/technical/{feature_id}/` — 技术笔记、决策记录
 - **🎨 设计与样式 (UI 视窗)** → `docs/design/`
   - 严禁在代码中硬编码颜色、间距等样式值，必须引用 `docs/design/tokens/base.json` 中的 Token。
   - 项目设计规范存储在 `docs/design/tokens/impeccable.md`，与 `base.json` 同目录，由 ui-agent 通过 `teach-impeccable` Skill 建立，不要移动该文件。
@@ -40,7 +48,8 @@
 
 | Agent | 职责范围 | Claude Code | Codex CLI |
 |-------|---------|------------|-----------|
-| `pm-agent` | 需求澄清、PRD 维护、验收标准 | `/prd [需求描述]` | `/agent pm [需求描述]` |
+| `pm-agent` | 需求澄清、双路径工作流（业务提需/产品自发）、PRD 维护 | `/prd [需求描述]` | `/agent pm [需求描述]` |
+| `project-manager-agent` | 项目排期、进度追踪、阻塞管理、状态报告 | `/progress [指令]` | `/agent project-manager [任务]` |
 | `dev-agent` | 业务代码实现、TDD 开发循环 | 直接 @提及 | `/agent dev [开发任务]` |
 | `ui-agent` | 设计规范建设（teach-impeccable）、Design Token 维护、PRD 双视窗创建 | 直接 @提及 | `/agent ui [UI 任务]` |
 | `architect-agent` | 系统设计、架构决策、Code Review | 直接 @提及 | `/agent architect [审查请求]` |
@@ -70,7 +79,7 @@
 **Claude Code（Hook 自动执行）：**
 - **`check-console-log.js`**：任何 Edit 工具写入 `.ts/.tsx/.js/.jsx` 文件时，自动检测并阻止提交遗留的 `console.log`。
 - **`session-stop.js`**：会话结束前自动提醒你保存进度到 `process.txt`。
-- **`session-start.js`**：会话开始时自动扫描并注入所有 `process.txt` 到上下文，恢复记忆。
+- **`session-start.js`**：会话开始时自动扫描并注入所有 `process.txt` 和 `process.md`（含 YAML stage 字段提取）到上下文，恢复记忆。
 
 **Codex CLI（当前模板默认使用指令约束）：**
 - 提交前手动检查是否含 `console.log`，如有则删除。
