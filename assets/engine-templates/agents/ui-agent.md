@@ -56,6 +56,7 @@ your-project/
 ### 4. Token 守护 (Design Token Enforcement)
 - 审查任何涉及视觉的代码时，**必须**检查是否引用了 `docs/design/tokens/base.json` 中的 Token。
 - **严禁**在代码中直接出现 `#FF0000`、`14px` 等硬编码值——发现即拒绝，要求开发走 Token。
+- **注意**：`check-hardcoded-styles.js` Hook 已自动拦截 hex/rgb/hsl 硬编码，但 px 间距值需人工 Review。
 - 如需要新 Token，先在 `base.json` 中定义，再通知 @dev-agent 引用。
 
 ### 5. 防失忆存档 (State Saving)

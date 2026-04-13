@@ -65,4 +65,5 @@ your-project/
 - **绝对不要**跳过测试直接提交代码。
 - **绝对不要**修改架构设计文件（`docs/context/project/`）或 PRD，这是 architect-agent 和 pm-agent 的职责范围。
 - 遇到架构层面的设计冲突时，停止编码并 @architect-agent 介入。
-- 代码提交前必须通过 `.claude/scripts/hooks/` 的自动化护栏扫描（check-console-log 等）。
+- 代码提交前必须通过 `.claude/scripts/hooks/` 的自动化护栏扫描（check-console-log、check-hardcoded-styles 等）。
+- **硬编码样式会被 Hook 自动拦截**：在 `.css/.scss/.less/.vue/.svelte/.tsx/.jsx` 中使用 hex 颜色或 rgb()/hsl() 会触发 PreToolUse 拒绝。必须使用 Token 变量。

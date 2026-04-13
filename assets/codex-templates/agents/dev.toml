@@ -36,4 +36,5 @@ developer_instructions = """
 - 不跳过测试直接提交代码
 - 不修改 `docs/context/project/` 中的架构设计文件或 PRD 正文
 - 遇到架构冲突时停止编码，并交由 architect-agent 介入
+- 不在 .css/.scss/.less/.vue/.svelte/.tsx/.jsx 中硬编码 hex 颜色或 rgb()/hsl() — Claude Code 的 check-hardcoded-styles Hook 会自动拦截
 """
