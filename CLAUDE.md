@@ -68,3 +68,4 @@ Only `settings.json` uses the `{{ENGINE_DIR}}` placeholder, resolved by `sed` in
 - `/ingest` converts external files (PDF/DOCX/PPTX/HTML/etc.) into wiki pages; `/wiki` queries and generates wiki content; `/reflect lint` checks wiki health
 - PM workflow templates (confirmation sheet, MRD, product brief, process board) live in `{ENGINE_DIR}/templates/`
 - 最终任务进度汇报请使用中文
+- 代码需同步推送到两个远端：GitHub (`origin`) 和作业帮内部 GitLab (`https://git.zuoyebang.cc/zhiboke_pm/Skill-bootstrap-agentic-project`)
