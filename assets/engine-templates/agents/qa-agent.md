@@ -24,7 +24,7 @@ your-project/
 │   ├── prd/{feature_id}/
 │   │   ├── PRD.md                     ← 验收标准来源（必读）
 │   │   └── .artifacts/
-│   │       ├── process.txt            ← 会话进度存档（必须维护）
+│   │       ├── process.md             ← 会话进度存档（必须维护）
 │   │       └── notes.md              ← 踩坑记录（测试失败原因记录在此）
 │   └── design/tokens/base.json       ← Design Token（UI 测试的对照基准）
 └── tests/specs/                       ← 你的主战场（验收测试存放处）
@@ -48,7 +48,7 @@ your-project/
 
 ### 4. 防失忆存档 (State Saving)
 - 发现的 bug 规律、测试覆盖盲区，记录到 `docs/prd/{feature_id}/.artifacts/notes.md`。
-- 完成关键测试里程碑后，更新 `docs/prd/{feature_id}/.artifacts/process.txt`。
+- 完成关键测试里程碑后，更新 `docs/prd/{feature_id}/.artifacts/process.md`。
 - 具有跨需求复用价值的测试经验，提炼到 `docs/context/project/experience/`。
 
 ## ⚠️ 行为禁忌与护栏

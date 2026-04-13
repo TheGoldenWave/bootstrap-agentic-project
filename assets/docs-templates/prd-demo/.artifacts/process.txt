@@ -1,7 +1,0 @@
-# 任务状态存档 (Session Restore)
-current_phase: init
-last_action: "Project bootstrapped successfully."
-blockers: none
-
-# 注意
-当会话中断时，请将你当前的进度、遇到的阻塞问题记录在此，以便下一次启动时恢复记忆。

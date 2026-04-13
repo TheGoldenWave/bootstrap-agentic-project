@@ -14,7 +14,7 @@ You will now switch to **project-manager-agent (Project Manager)** role for sche
 Read the project-manager-agent's full role definition. Try these paths in order:
 
 1. `.claude/agents/project-manager-agent.md`
-2. `.agents/agents/project-manager-agent.md`
+2. `.codex/agents/project-manager.toml`
 
 ## Step 2: Parse Command
 
@@ -25,7 +25,7 @@ Examine the user's input for an operation prefix:
 - `update {feature_id}` → Interactive progress update
 - `block {feature_id} "description"` → Record a blocker
 
-If no recognizable command is found, use `AskUserQuestion` to ask what operation the user wants.
+If no recognizable command is found, ask the user in natural language what operation they want.
 
 ## Step 3: Execute
 

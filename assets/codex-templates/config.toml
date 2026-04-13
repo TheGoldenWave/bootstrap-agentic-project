@@ -13,12 +13,20 @@
 approval_policy  = "on-request"
 sandbox_mode     = "workspace-write"
 web_search       = "live"
+project_doc_fallback_filenames = ["CLAUDE.md"]
 
 # 每次会话追加的开发指令（不替换 AGENTS.md，而是叠加）
 developer_instructions = """
 请严格遵守项目 AGENTS.md 中的全局规范和路由规则。
-每次会话开始前，先读取 docs/prd/ 下所有 process.txt 文件以恢复上下文。
+每次会话开始前，先读取 docs/prd/ 下所有 `.artifacts/process.md` 文件；若存在遗留 `process.txt`，一并兼容读取以恢复上下文。
 代码中禁止硬编码颜色、间距等样式值，必须引用 docs/design/tokens/base.json。
+知识库管理命令（通过 .agents/skills/ 发现）：
+  /ingest <file-or-url>    — 导入外部知识源到 Wiki 体系
+  /wiki query <topic>       — 查询项目知识库
+  /wiki generate overview   — 生成知识总览
+  /reflect lint             — 知识库健康检查
+项目知识层目录：.sources/（原始知识源，只读）→ docs/context/wiki/（Wiki 页面）→ docs/context/INDEX.md（索引）。
+如需并行委派，请明确说明使用哪个自定义 subagent（pm/dev/architect/ui/qa/project-manager）及其目标。
 """
 
 # --- MCP 服务器 ---
@@ -37,11 +45,17 @@ developer_instructions = """
 # args    = ["-y", "tapd-mcp-server"]
 # startup_timeout_sec = 30
 
+# Markitdown MCP — 用于 /ingest 知识导入（PDF/DOCX/PPTX/HTML → Markdown）
+# [mcp_servers.markitdown]
+# command = "uvx"
+# args    = ["markitdown-mcp"]
+# startup_timeout_sec = 30
+
 # --- 功能开关 ---
 [features]
 # 启用多 Agent 协作（稳定功能，当前 Codex 版本默认开启）
 multi_agent   = true
-# 如需 Codex hooks，请另行添加 .codex/hooks/hooks.json 后再开启
+# 如需 Codex hooks，请另行添加 .codex/hooks.json 后再开启
 # codex_hooks = true
 
 # --- 运行模式 ---

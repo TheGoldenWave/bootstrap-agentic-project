@@ -28,7 +28,7 @@ your-project/
 │   ├── prd/{feature_id}/
 │   │   ├── PRD.md                 ← 需求文档（必读）
 │   │   └── .artifacts/
-│   │       ├── process.txt        ← 会话进度存档（必须维护）
+│   │       ├── process.md         ← 会话进度存档（必须维护）
 │   │       └── notes.md           ← 踩坑记录（必须维护）
 │   └── design/tokens/base.json   ← Design Token 基准（禁止绕过）
 ├── tests/specs/                   ← 验收测试用例（TDD 先行）
@@ -62,7 +62,7 @@ your-project/
 
 ### 6. 防失忆存档 (State Saving)
 - 遇到技术难点或踩坑时，**必须**记录到 `docs/prd/{feature_id}/.artifacts/notes.md`。
-- 完成重要里程碑后，更新 `docs/prd/{feature_id}/.artifacts/process.txt` 中的 `current_phase` 状态。
+- 完成重要里程碑后，更新 `docs/prd/{feature_id}/.artifacts/process.md` 中的 `current_phase` 状态。
 - 具有团队复用价值的踩坑记录，同步提炼一份到 `docs/context/project/experience/`。
 - 踩坑后建议运行 `/reflect` 将新知识归档到 INDEX.md。
 - 遇到不熟悉的 API/库时，先查 `docs/context/wiki/entities/` 是否有已有知识页面。

@@ -10,22 +10,37 @@ Initialize the current working directory with the full Agentic Engineering scaff
 
 ## Execution
 
-Find and execute the `init.sh` bootstrap script. Search the following paths in order:
+Find and execute the `init.sh` bootstrap script. Search upward from the current working directory first, then fall back to user-level skill directories:
 
 ```bash
 SKILL_PATH=""
-for root in \
-  ".agents/skills" \
-  "$HOME/.agents/skills" \
-  ".claude/skills" \
-  "$HOME/.claude/skills" \
-  ".claude-plugin" \
-  "$HOME/.claude-plugin"
-do
-  [ -d "$root" ] || continue
-  SKILL_PATH="$(find "$root" -path "*/bootstrap-agentic-project/scripts/init.sh" -print -quit 2>/dev/null)"
-  [ -n "$SKILL_PATH" ] && break
+SEARCH_DIR="$PWD"
+
+while [ "$SEARCH_DIR" != "/" ] && [ -z "$SKILL_PATH" ]; do
+  for root in \
+    "$SEARCH_DIR/.agents/skills" \
+    "$SEARCH_DIR/.claude/skills" \
+    "$SEARCH_DIR/.claude-plugin"
+  do
+    [ -d "$root" ] || continue
+    SKILL_PATH="$(find "$root" -path "*/bootstrap-agentic-project/scripts/init.sh" -print -quit 2>/dev/null)"
+    [ -n "$SKILL_PATH" ] && break
+  done
+
+  SEARCH_DIR="$(dirname "$SEARCH_DIR")"
 done
+
+if [ -z "$SKILL_PATH" ]; then
+  for root in \
+    "$HOME/.agents/skills" \
+    "$HOME/.claude/skills" \
+    "$HOME/.claude-plugin"
+  do
+    [ -d "$root" ] || continue
+    SKILL_PATH="$(find "$root" -path "*/bootstrap-agentic-project/scripts/init.sh" -print -quit 2>/dev/null)"
+    [ -n "$SKILL_PATH" ] && break
+  done
+fi
 
 if [ -n "$SKILL_PATH" ]; then
   bash "$SKILL_PATH"
@@ -40,7 +55,7 @@ fi
 After the script completes, verify these core files exist:
 
 - `AGENTS.md` — global agent routing
-- `CLAUDE.md` — symlink to AGENTS.md (or existing file with routing appended)
+- `CLAUDE.md` — symlink to AGENTS.md (or existing file with an AGENTS bridge note appended)
 - `.claude/settings.json` — hook configuration
 - `.claude/agents/` — 5+ agent role definitions
 - `.codex/config.toml` — Codex CLI configuration
@@ -54,8 +69,8 @@ After successful initialization, tell the user:
 > Agentic Engineering scaffolding is ready!
 >
 > **Quick start:**
-> - `/prd [your idea]` — start a new requirement with PM Agent
-> - `/progress init {feature_id}` — initialize project schedule
+> - Claude Code: `/prd [your idea]`
+> - Codex: ask to use the `pm` custom subagent for requirement discovery
 >
 > **Next steps:**
 > 1. Fill in API keys in `.claude/mcp-servers.json` (Claude Code) or `.codex/config.toml` (Codex CLI)

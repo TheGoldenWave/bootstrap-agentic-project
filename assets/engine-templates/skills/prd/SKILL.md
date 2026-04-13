@@ -14,7 +14,7 @@ You will now switch to **pm-agent (Senior Product Manager)** role for requiremen
 Read the pm-agent's full role definition. Try these paths in order and use the first one that exists:
 
 1. `.claude/agents/pm-agent.md`
-2. `.agents/agents/pm-agent.md`
+2. `.codex/agents/pm.toml`
 
 ## Step 2: Parse Path Hint
 
@@ -39,6 +39,6 @@ $ARGUMENTS
 
 1. Your first action MUST be **dialogue-based requirements gathering**. Do NOT immediately output a full PRD.
 2. Ask 1-3 clarifying questions to help the user articulate core pain points, user journeys, business rules, and edge cases.
-3. Use `AskUserQuestion` to provide options, or ask in natural language and wait for user input.
+3. Ask in natural language and wait for user input.
 4. As requirements crystallize, progressively advance through the structured document workflow (confirmation sheet → MRD → PRD for business path, or product brief → PRD for product path).
 5. Follow the dual-path workflow defined in pm-agent's role definition.

@@ -4,8 +4,9 @@
  * SessionStart Hook — Memory Injection (with Context Budget)
  *
  * Fires when a new Claude Code session starts (SessionStart event).
- * Scans docs/prd/ for all process.txt AND process.md files and injects
- * their contents into the session context so Claude can restore memory.
+ * Scans docs/prd/ for primary .artifacts/process.md files plus legacy
+ * process.txt files and injects their contents into the session context
+ * so Claude can restore memory.
  *
  * V3: Budget-aware injection — limits total injected content to
  * MAX_CONTEXT_CHARS (~2000 tokens) to avoid consuming excessive
@@ -97,7 +98,8 @@ function main() {
     for (const filePath of findFiles(prdDir, name)) {
       let stat;
       try { stat = fs.statSync(filePath); } catch (_) { continue; }
-      allFiles.push({ path: filePath, type: name.endsWith('.md') ? 'md' : 'txt', mtimeMs: stat.mtimeMs });
+      const priority = filePath.includes(`${path.sep}.artifacts${path.sep}process.md`) ? 0 : 1;
+      allFiles.push({ path: filePath, type: name.endsWith('.md') ? 'md' : 'txt', mtimeMs: stat.mtimeMs, priority });
     }
   }
 
@@ -107,7 +109,7 @@ function main() {
   }
 
   // Sort by mtime, newest first
-  allFiles.sort((a, b) => b.mtimeMs - a.mtimeMs);
+  allFiles.sort((a, b) => a.priority - b.priority || b.mtimeMs - a.mtimeMs);
 
   // --- Single-pass budget-aware injection ---
   const stageSummaries = [];  // Always injected (outside budget)

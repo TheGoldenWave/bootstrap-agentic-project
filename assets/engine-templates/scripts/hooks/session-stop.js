@@ -7,8 +7,8 @@
  * On first invocation: exit 2 to inject a reminder and keep Claude active.
  * On second invocation (stop_hook_active: true): exit 0 to allow stop.
  *
- * V3: Also detects process.md (not just process.txt) and suggests
- * running /reflect if notes.md files were recently modified.
+ * V3: Detects primary .artifacts/process.md plus legacy process.txt
+ * files and suggests running /reflect if notes.md files were recently modified.
  *
  * Wired in settings.json:
  *   hooks.Stop
@@ -38,7 +38,7 @@ if (!fs.existsSync(prdDir)) {
   process.exit(0);
 }
 
-// Check if there are any process files (process.txt or process.md) in the project
+// Check if there are any process files (.artifacts/process.md or legacy process.txt) in the project
 function hasProcessFiles(dir) {
   if (!fs.existsSync(dir)) return false;
   let entries;
@@ -85,7 +85,7 @@ if (!hasProcessFiles(prdDir)) {
 // Build checkpoint message
 let message =
   '[Checkpoint] 📌 即将结束会话。在结束前，请确认以下两项：\n' +
-  '1. 已将本次会话的进度（当前阶段、下一步计划）更新到对应功能目录的 process.txt / process.md\n' +
+  '1. 已将本次会话的进度（当前阶段、下一步计划）更新到对应功能目录的 .artifacts/process.md（如项目仍在迁移，也可兼容保留 process.txt）\n' +
   '2. 遇到的问题或踩坑已记录到同目录的 notes.md\n';
 
 // Suggest /reflect if notes.md was recently modified (within 2 hours)

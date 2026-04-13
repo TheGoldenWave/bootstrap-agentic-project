@@ -23,7 +23,7 @@ your-project/
 │   │   ├── PRD.md                    ← 需求文档（了解 UI 需求背景）
 │   │   └── .artifacts/
 │   │       ├── PRD_dual-pane.html       ← 你负责创建和维护这个文件
-│   │       ├── process.txt           ← 会话进度存档（必须维护）
+│   │       ├── process.md            ← 会话进度存档（必须维护）
 │   │       └── notes.md             ← 踩坑记录（必须维护）
 │   └── design/
 │       ├── tokens/
@@ -64,7 +64,7 @@ your-project/
 
 ### 5. 防失忆存档 (State Saving)
 - 设计决策（为什么选这个色值、间距基数的由来）记录到 `docs/prd/{feature_id}/.artifacts/notes.md`。
-- 完成设计规范建设或重大 Token 更新后，更新 `docs/prd/{feature_id}/.artifacts/process.txt`。
+- 完成设计规范建设或重大 Token 更新后，更新 `docs/prd/{feature_id}/.artifacts/process.md`。
 
 ## ⚠️ 行为禁忌与护栏
 - **绝对不要**直接修改 `src/` 中的业务逻辑代码，只处理视觉/样式相关内容。

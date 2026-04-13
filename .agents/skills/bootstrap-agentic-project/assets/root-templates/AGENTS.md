@@ -6,7 +6,7 @@
 > 你的任务是根据此地图**精准寻址（Progressive Disclosure）**，只获取你当前任务最需要的上下文。
 >
 > **🧠 会话恢复指令（每次会话必读）：**
-> 在执行任何任务前，你**必须**首先在 `docs/prd/` 目录下搜索所有 `process.txt` 和 `process.md` 文件并读取，以恢复上次会话的上下文状态。
+> 在执行任何任务前，你**必须**首先在 `docs/prd/` 目录下搜索所有 `.artifacts/process.md` 文件，并兼容读取遗留的 `process.txt`，以恢复上次会话的上下文状态。
 > （Claude Code 用户：此操作已由 SessionStart Hook 自动完成。Codex 用户：请手动执行。）
 
 ---
@@ -48,12 +48,12 @@
 
 | Agent | 职责范围 | Claude Code | Codex CLI |
 |-------|---------|------------|-----------|
-| `pm-agent` | 需求澄清、双路径工作流（业务提需/产品自发）、PRD 维护 | `/prd [需求描述]` | `/agent pm [需求描述]` |
-| `project-manager-agent` | 项目排期、进度追踪、阻塞管理、状态报告 | `/progress [指令]` | `/agent project-manager [任务]` |
-| `dev-agent` | 业务代码实现、TDD 开发循环 | 直接 @提及 | `/agent dev [开发任务]` |
-| `ui-agent` | 设计规范建设（teach-impeccable）、Design Token 维护、PRD 双视窗创建 | 直接 @提及 | `/agent ui [UI 任务]` |
-| `architect-agent` | 系统设计、架构决策、Code Review | 直接 @提及 | `/agent architect [审查请求]` |
-| `qa-agent` | TDD/BDD 测试用例、质量评估 | 直接 @提及 | `/agent qa [测试任务]` |
+| `pm-agent` | 需求澄清、双路径工作流（业务提需/产品自发）、PRD 维护 | `/prd [需求描述]` | 明确要求使用 `pm` 自定义 subagent |
+| `project-manager-agent` | 项目排期、进度追踪、阻塞管理、状态报告 | `/progress [指令]` | 明确要求使用 `project-manager` 自定义 subagent |
+| `dev-agent` | 业务代码实现、TDD 开发循环 | 直接 @提及 | 明确要求使用 `dev` 自定义 subagent |
+| `ui-agent` | 设计规范建设（teach-impeccable）、Design Token 维护、PRD 双视窗创建 | 直接 @提及 | 明确要求使用 `ui` 自定义 subagent |
+| `architect-agent` | 系统设计、架构决策、Code Review | 直接 @提及 | 明确要求使用 `architect` 自定义 subagent |
+| `qa-agent` | TDD/BDD 测试用例、质量评估 | 直接 @提及 | 明确要求使用 `qa` 自定义 subagent |
 
 ---
 
@@ -63,7 +63,7 @@
 
 你在编写任何代码前，必须确保遵守引擎目录下 `rules/common/coding-style.md` 中定义的全局规范：
 - Claude Code 路径：`.claude/rules/common/coding-style.md`
-- Codex 路径：`.agents/rules/common/coding-style.md`（如存在）
+- Codex 路径：优先读取 `.claude/rules/common/coding-style.md`
 
 ### 动态上下文（按需激活）
 
@@ -78,13 +78,13 @@
 
 **Claude Code（Hook 自动执行）：**
 - **`check-console-log.js`**：任何 Edit 工具写入 `.ts/.tsx/.js/.jsx` 文件时，自动检测并阻止提交遗留的 `console.log`。
-- **`session-stop.js`**：会话结束前自动提醒你保存进度到 `process.txt`。
-- **`session-start.js`**：会话开始时自动扫描并注入所有 `process.txt` 和 `process.md`（含 YAML stage 字段提取）到上下文，恢复记忆。
+- **`session-stop.js`**：会话结束前自动提醒你保存进度到 `.artifacts/process.md`（兼容遗留 `process.txt`）。
+- **`session-start.js`**：会话开始时自动扫描并注入所有 `.artifacts/process.md` 与遗留 `process.txt`（含 YAML stage 字段提取）到上下文，恢复记忆。
 
 **Codex CLI（当前模板默认使用指令约束）：**
 - 提交前手动检查是否含 `console.log`，如有则删除。
-- 完成关键步骤后手动更新 `process.txt`。
-- 会话开始时手动读取 `process.txt` 文件恢复上下文。
+- 完成关键步骤后手动更新 `docs/prd/{feature_id}/.artifacts/process.md`。
+- 会话开始时优先读取 `.artifacts/process.md`，再兼容读取遗留的 `process.txt`。
 
 ---
 
@@ -94,7 +94,7 @@
 |------|------------|-----------|
 | Agent 角色定义 | `.claude/agents/*.md` | `.codex/agents/*.toml` |
 | MCP 配置 | `.claude/mcp-servers.json` | `.codex/config.toml` |
-| 自动化 Hooks | ✅ `.claude/scripts/hooks/` | 可选 `.codex/hooks/hooks.json`（本模板默认未配置） |
+| 自动化 Hooks | ✅ `.claude/scripts/hooks/` | 可选 `.codex/hooks.json`（本模板默认未配置，且主要用于 Bash 级护栏） |
 | 技能加载 | `.claude/skills/` 或插件 | `.agents/skills/`（自动发现） |
-| 斜线命令 | `.claude/commands/` | 自然语言 + `/agent` / `/skills` |
+| 斜线命令 | `.claude/commands/` | 自然语言 + `/skills`；自定义 subagent 通过明确委派触发 |
 | 进度存档 | Stop Hook 自动提醒 | 手动执行 |

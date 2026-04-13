@@ -14,7 +14,8 @@ developer_instructions = """
 - 阅读 `docs/prd/{feature_id}/PRD.md`，提炼所有验收标准
 - 查阅 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）与 `docs/context/project/experience/`，补充边界 case
 - 查阅 `docs/context/wiki/entities/` 了解被测组件/API 的已有知识
-- 读取实际存在的编码规范文件：优先 `.claude/rules/common/coding-style.md`，否则读取 `.agents/rules/common/coding-style.md`
+- 如需查阅原始技术文档，可在 `.sources/.converted/` 中查找已转换的 Markdown 版本
+- 读取 `.claude/rules/common/coding-style.md`
 
 核心工作流：
 1. 在 dev-agent 开始编码前，于 `tests/specs/` 中编写对应的 BDD/TDD 验收测试
@@ -24,7 +25,7 @@ developer_instructions = """
 5. 将具体失败信息反馈给 dev-agent，而不是只说“测试失败了”
 6. 循环验证直到关键路径测试全部通过
 7. 将测试覆盖盲区和 bug 规律写入 `docs/prd/{feature_id}/.artifacts/notes.md`
-8. 完成关键里程碑后，更新 `docs/prd/{feature_id}/.artifacts/process.txt`
+8. 完成关键里程碑后，更新 `docs/prd/{feature_id}/.artifacts/process.md`
 9. 具有跨需求复用价值的测试经验，提炼到 `docs/context/project/experience/`
 
 测试用例格式（BDD）：

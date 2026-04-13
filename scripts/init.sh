@@ -137,41 +137,29 @@ done
 echo ""
 echo "📄 Copying root config files..."
 
+if [ -f "./AGENTS.md" ]; then
+    echo "  ⏭  Skipped AGENTS.md (already exists)."
+else
+    safe_copy "${ASSETS_DIR}/root-templates/AGENTS.md" "./AGENTS.md"
+fi
+
 if [ -f "./CLAUDE.md" ]; then
-    echo "  ⏭  Skipped CLAUDE.md (already exists). Appending agent routing section..."
-    # Only append if our marker isn't already present
+    echo "  ⏭  Skipped CLAUDE.md (already exists). Appending AGENTS bridge section..."
     if ! grep -q "Added by Agentic Bootstrap" ./CLAUDE.md 2>/dev/null; then
         {
             echo ""
             echo ""
             echo "# --- Added by Agentic Bootstrap ---"
-            cat "${ASSETS_DIR}/root-templates/AGENTS.md"
+            echo "This repository now uses \`AGENTS.md\` as the canonical shared instruction file for Claude Code and Codex."
+            echo "Read \`./AGENTS.md\` before starting work, and keep any project-wide routing or collaboration rules there."
         } >> ./CLAUDE.md
-        echo "  ✅ Appended Agentic routing to existing CLAUDE.md"
+        echo "  ✅ Appended AGENTS bridge note to existing CLAUDE.md"
     else
-        echo "  ⏭  Agentic routing already present in CLAUDE.md"
-    fi
-elif [ -f "./AGENTS.md" ]; then
-    echo "  ⏭  Skipped AGENTS.md (already exists). Appending agent routing section..."
-    if ! grep -q "Added by Agentic Bootstrap" ./AGENTS.md 2>/dev/null; then
-        {
-            echo ""
-            echo ""
-            echo "# --- Added by Agentic Bootstrap ---"
-            cat "${ASSETS_DIR}/root-templates/AGENTS.md"
-        } >> ./AGENTS.md
-        echo "  ✅ Appended Agentic routing to existing AGENTS.md"
-    else
-        echo "  ⏭  Agentic routing already present in AGENTS.md"
+        echo "  ⏭  AGENTS bridge already present in CLAUDE.md"
     fi
 else
-    safe_copy "${ASSETS_DIR}/root-templates/AGENTS.md" "./AGENTS.md"
-    if [ -e "./CLAUDE.md" ]; then
-        echo "  ⏭  Skipped (already exists): ./CLAUDE.md"
-    else
-        ln -sf AGENTS.md ./CLAUDE.md
-        echo "  ✅ Created: ./CLAUDE.md → AGENTS.md (symlink)"
-    fi
+    ln -sf AGENTS.md ./CLAUDE.md
+    echo "  ✅ Created: ./CLAUDE.md → AGENTS.md (symlink)"
 fi
 
 # =================================================================
@@ -309,22 +297,27 @@ fi
 # 12b. Install /C-startup as a global user-level skill
 # =================================================================
 GLOBAL_SKILLS_DIR="${HOME}/.claude/skills"
-if [ -d "$GLOBAL_SKILLS_DIR" ]; then
-    mkdir -p "${GLOBAL_SKILLS_DIR}/C-startup"
-    safe_copy "${ASSETS_DIR}/engine-templates/skills/C-startup/SKILL.md" "${GLOBAL_SKILLS_DIR}/C-startup/SKILL.md"
-    echo "  🌐 /C-startup available globally at ${GLOBAL_SKILLS_DIR}/C-startup/"
+install_global_skill() {
+    local skill_name="$1"
+    local skill_src="${ASSETS_DIR}/engine-templates/skills/${skill_name}/SKILL.md"
+    local skill_dir="${GLOBAL_SKILLS_DIR}/${skill_name}"
 
-    mkdir -p "${GLOBAL_SKILLS_DIR}/reflect"
-    safe_copy "${ASSETS_DIR}/engine-templates/skills/reflect/SKILL.md" "${GLOBAL_SKILLS_DIR}/reflect/SKILL.md"
-    echo "  🌐 /reflect available globally at ${GLOBAL_SKILLS_DIR}/reflect/"
+    [ -f "$skill_src" ] || return 0
 
-    mkdir -p "${GLOBAL_SKILLS_DIR}/ingest"
-    safe_copy "${ASSETS_DIR}/engine-templates/skills/ingest/SKILL.md" "${GLOBAL_SKILLS_DIR}/ingest/SKILL.md"
-    echo "  🌐 /ingest available globally at ${GLOBAL_SKILLS_DIR}/ingest/"
+    if ! mkdir -p "$skill_dir" 2>/dev/null; then
+        echo "  ⚠️  Skipped global /${skill_name} install (cannot write ${skill_dir})"
+        return 0
+    fi
 
-    mkdir -p "${GLOBAL_SKILLS_DIR}/wiki"
-    safe_copy "${ASSETS_DIR}/engine-templates/skills/wiki/SKILL.md" "${GLOBAL_SKILLS_DIR}/wiki/SKILL.md"
-    echo "  🌐 /wiki available globally at ${GLOBAL_SKILLS_DIR}/wiki/"
+    safe_copy "$skill_src" "${skill_dir}/SKILL.md"
+    echo "  🌐 /${skill_name} available globally at ${skill_dir}/"
+}
+
+if [ -d "$GLOBAL_SKILLS_DIR" ] || [ -w "$(dirname "$GLOBAL_SKILLS_DIR")" ]; then
+    install_global_skill "C-startup"
+    install_global_skill "reflect"
+    install_global_skill "ingest"
+    install_global_skill "wiki"
 fi
 
 # =================================================================
@@ -340,7 +333,7 @@ safe_copy_dir "${ASSETS_DIR}/engine-templates/templates" "${ENGINE_DIR}/template
 echo ""
 echo "📦 Installing .agents/skills/ packages (Codex auto-discovery)..."
 
-# 12a. Find this skill's own .agents/skills/ directory and copy it
+# 14a. Find this skill's own .agents/skills/ directory and copy it
 SKILL_AGENTS_DIR="${SKILL_DIR}/.agents/skills"
 if [ -d "$SKILL_AGENTS_DIR" ]; then
     safe_copy_dir "$SKILL_AGENTS_DIR" ".agents/skills"
@@ -349,6 +342,17 @@ elif [ -f "${SKILL_DIR}/SKILL.md" ]; then
     safe_copy_dir "$SKILL_DIR" ".agents/skills/bootstrap-agentic-project"
     echo "  ✅ Installed standalone bootstrap-agentic-project skill package"
 fi
+
+# 14b. Install wiki/ingest/reflect as top-level .agents/skills/ for Codex auto-discovery
+echo "  📚 Installing knowledge-base skills for Codex discovery..."
+for skill_name in ingest wiki reflect; do
+    skill_src="${ASSETS_DIR}/engine-templates/skills/${skill_name}/SKILL.md"
+    skill_dst=".agents/skills/${skill_name}/SKILL.md"
+    if [ -f "$skill_src" ]; then
+        mkdir -p ".agents/skills/${skill_name}"
+        safe_copy "$skill_src" "$skill_dst"
+    fi
+done
 
 # =================================================================
 # 15. Docs / PRD demo
@@ -437,10 +441,10 @@ echo "   5. 安装 Markitdown: pip install markitdown（或 uvx markitdown-mcp�
 echo ""
 echo "   开始第一个需求："
 echo "   • Claude Code: /prd [你的初步想法]        （业务提需：/prd business ...）"
-echo "   • Codex CLI  : /agent pm [你的初步想法]"
+echo "   • Codex CLI  : 请明确要求使用 pm 自定义 subagent 先澄清需求并产出 PRD"
 echo "   项目排期管理："
 echo "   • Claude Code: /progress init {feature_id}"
-echo "   • Codex CLI  : /agent project-manager init {feature_id}"
+echo "   • Codex CLI  : 请明确要求使用 project-manager 自定义 subagent 初始化排期"
 echo "   知识库管理："
 echo "   • /ingest <file-or-url>     （纳入外部知识源）"
 echo "   • /wiki query <topic>        （查询知识库）"

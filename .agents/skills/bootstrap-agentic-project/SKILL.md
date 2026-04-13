@@ -15,22 +15,37 @@ This skill initializes a Next-Gen Agentic Engineering project structure. It crea
 When the user invokes this skill, you MUST execute the initialization script provided in this package.
 
 ### Step 1: Execute the Bootstrap Script
-Find and execute the `init.sh` script associated with this skill. Since this skill might be installed globally or locally for either Claude Code or Codex, use a search path that covers both engines:
+Find and execute the `init.sh` script associated with this skill. Since this skill might be installed globally or locally for either Claude Code or Codex, search upward from the current working directory first, then fall back to user-level skill directories:
 
 ```bash
 SKILL_PATH=""
-for root in \
-  ".agents/skills" \
-  "$HOME/.agents/skills" \
-  ".claude/skills" \
-  "$HOME/.claude/skills" \
-  ".claude-plugin" \
-  "$HOME/.claude-plugin"
-do
-  [ -d "$root" ] || continue
-  SKILL_PATH="$(find "$root" -path "*/bootstrap-agentic-project/scripts/init.sh" -print -quit 2>/dev/null)"
-  [ -n "$SKILL_PATH" ] && break
+SEARCH_DIR="$PWD"
+
+while [ "$SEARCH_DIR" != "/" ] && [ -z "$SKILL_PATH" ]; do
+  for root in \
+    "$SEARCH_DIR/.agents/skills" \
+    "$SEARCH_DIR/.claude/skills" \
+    "$SEARCH_DIR/.claude-plugin"
+  do
+    [ -d "$root" ] || continue
+    SKILL_PATH="$(find "$root" -path "*/bootstrap-agentic-project/scripts/init.sh" -print -quit 2>/dev/null)"
+    [ -n "$SKILL_PATH" ] && break
+  done
+
+  SEARCH_DIR="$(dirname "$SEARCH_DIR")"
 done
+
+if [ -z "$SKILL_PATH" ]; then
+  for root in \
+    "$HOME/.agents/skills" \
+    "$HOME/.claude/skills" \
+    "$HOME/.claude-plugin"
+  do
+    [ -d "$root" ] || continue
+    SKILL_PATH="$(find "$root" -path "*/bootstrap-agentic-project/scripts/init.sh" -print -quit 2>/dev/null)"
+    [ -n "$SKILL_PATH" ] && break
+  done
+fi
 
 if [ -n "$SKILL_PATH" ]; then
   bash "$SKILL_PATH"
@@ -42,7 +57,7 @@ fi
 ### Step 2: Verification
 Verify that the following core components have been successfully created in the user's current working directory:
 - `AGENTS.md`
-- `CLAUDE.md` or an existing project instruction file already updated with the routing section
+- `CLAUDE.md` symlink or an existing `CLAUDE.md` updated with the AGENTS bridge section
 - `.claude/settings.json`
 - `.codex/config.toml`
 - `.claude/contexts/dev.md`
@@ -55,4 +70,4 @@ Do not auto-delete the skill package. If the project temporarily vendored a loca
 Report to the user:
 > "✅ Agentic Engineering 标准底座已初始化完毕！
 > 包含 Claude Code Hooks、动态 Contexts、Codex 多 Agent 配置和底层 Rules 已就绪。
-> 您可以输入 `/prd [您的初步需求]` 来激活 pm-agent 开始您的第一个需求了！"
+> 对于 Codex，请明确要求使用 `pm` 自定义 subagent 开始需求澄清。"

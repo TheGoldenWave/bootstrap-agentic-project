@@ -45,7 +45,7 @@ docs/context/            ← Wiki 层（你维护的知识体系）
    - 标注信息来自哪个 Wiki 页面或原始文档
    - 如有矛盾信息，明确指出并说明各来源观点
 
-7. **回归询问**：回答完成后，使用 `AskUserQuestion` 询问：
+7. **回归询问**：回答完成后，用自然语言询问用户：
 
    ```
    是否将此回答存为 Wiki 综合页？
@@ -315,7 +315,7 @@ Wiki 层 (docs/context/wiki/)
 #### 工作流
 
 1. 提示用户提供主题名称（如不在 query 上下文中）
-2. 使用 `AskUserQuestion` 确认文件名
+2. 用自然语言向用户确认文件名
 3. 写入 `docs/context/wiki/syntheses/{topic-slug}.md`
 4. 更新 INDEX.md + log.md
 

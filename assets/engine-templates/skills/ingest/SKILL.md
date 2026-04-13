@@ -25,9 +25,10 @@ docs/context/          ← Layer 2: Wiki layer（你生成和更新页面）
 ## 前置检查
 
 1. 确认 `.sources/` 目录存在（不存在则提示运行 bootstrap）
-2. 确认 Markitdown 可用：
-   - **优先**：检查 MCP server `markitdown` 是否已配置（查看 `.claude/mcp-servers.json`）
-   - **备选**：检查 `markitdown` CLI 是否可用（`which markitdown` 或 `pip show markitdown`）
+2. 确认 Markitdown 可用（按优先级检测）：
+   - **Claude Code**：检查 `.claude/mcp-servers.json` 中是否配置了 `markitdown` MCP server
+   - **Codex CLI**：检查 `.codex/config.toml` 中是否有 `[mcp_servers.markitdown]` 配置
+   - **CLI 备选**：检查 `markitdown` CLI 是否可用（`which markitdown` 或 `pip show markitdown`）
    - 都不可用 → 提示用户安装：`pip install markitdown` 或 `uvx markitdown-mcp`
 
 ## Step 1: 检测源类型
@@ -170,7 +171,7 @@ title: {从内容中提取的标题}
 
 ### 用户确认
 
-展示变更列表，使用 `AskUserQuestion` 确认：
+展示变更列表，用自然语言向用户确认：
 
 ```
 📥 Ingest 完成：{source name}

@@ -27,7 +27,7 @@ Stage 流转：intake → confirmation → mrd → prd → handoff
 - 记录原始需求（保留业务方原话）
 - 1-2 轮启发式追问（背景、目标、场景、规则、边界）
 - 必问："这个需求的长期定位是什么？V1 是切入点还是全部？"
-- Codex 没有 AskUserQuestion 时，直接用自然语言提问并等待用户回复
+- 直接用自然语言提问并等待用户回复
 
 2. confirmation（需求确认）
 - 基于对话 + docs/context/ 已有信息，自动填充确认单
@@ -45,7 +45,7 @@ Stage 流转：intake → confirmation → mrd → prd → handoff
 
 5. handoff（移交）
 - 创建 handoff_note.md
-- 建议用户使用 /agent project-manager 初始化项目排期
+- 建议用户明确要求使用 `project-manager` 自定义 subagent 初始化项目排期
 
 ## 路径 B：产品自发路径
 
@@ -59,6 +59,7 @@ Stage 流转：discovery → brief → prd → handoff
 
 - 正式撰写前，必须查阅 docs/context/INDEX.md（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 docs/context/project/experience/
 - 同时检查 `docs/context/wiki/` 中是否有相关领域知识（可运行 `/wiki query <主题>` 快速了解）
+- 如需查阅原始外部文档，可在 `.sources/.converted/` 中查找已转换的 Markdown 版本
 - 引入新技术栈或第三方服务时，建议先用 `/ingest` 导入相关技术文档
 - 创建 PRD 目录前，必须先扫描 docs/prd/.demo-feature/ 对齐产出物
 - PRD 必须包含目标表格、User Journey Map、核心功能清单、验收标准、功能边界和非功能约束
@@ -80,5 +81,5 @@ Stage 流转：discovery → brief → prd → handoff
 - 不执行 shell 命令来构建或部署
 - 不要在 PRD 中硬编码颜色、字号等 UI Token
 - 遇到技术选型或架构冲突时，主动建议 architect-agent 介入
-- 遇到排期/进度问题时，建议用户使用 /agent project-manager
+- 遇到排期/进度问题时，建议用户明确要求使用 `project-manager` 自定义 subagent
 """
