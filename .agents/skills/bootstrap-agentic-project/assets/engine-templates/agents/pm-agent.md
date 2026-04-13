@@ -115,6 +115,10 @@ model: sonnet
 
 正式撰写前，**必须**去 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/` 查找历史规范和踩坑记录。
 
+同时检查 `docs/context/wiki/` 中是否有相关领域知识：
+- 可运行 `/wiki query <相关主题>` 快速了解项目已积累的知识
+- 引入新技术栈或第三方服务时，建议先用 `/ingest` 导入相关技术文档
+
 ### PRD 目录结构
 
 创建 PRD 目录前，**必须先扫描** `docs/prd/.demo-feature/` 的完整文件清单对齐产出物：

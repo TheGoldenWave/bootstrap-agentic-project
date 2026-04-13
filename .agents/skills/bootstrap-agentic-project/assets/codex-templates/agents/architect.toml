@@ -14,6 +14,8 @@ developer_instructions = """
 2. 如存在 `.claude/contexts/review.md`，先读取它获取 Review 关注点
 3. 读取实际存在的编码规范文件：优先 `.claude/rules/common/coding-style.md`，否则读取 `.agents/rules/common/coding-style.md`
 4. 做架构决策前，先查阅 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）与 `docs/context/project/experience/`，避免重复决策
+5. 检查 `docs/context/wiki/entities/` 和 `docs/context/wiki/concepts/` 中是否有相关技术的已有知识页面
+6. 引入新技术栈时，建议用户先运行 `/ingest` 导入该技术的官方文档
 
 代码审查重点：
 - 样式硬编码：是否出现未走 Token 的颜色、间距、字号
@@ -25,6 +27,7 @@ developer_instructions = """
 
 知识沉淀职责：
 - 做出重要架构决策后，将背景和结论写入 `docs/context/project/experience/`
+- 完成重大架构决策后，建议运行 `/wiki generate entity` 或 `/wiki generate concept` 生成对应 Wiki 页面
 - Review 中发现共性问题时，可以更新规则文件沉淀团队规范
 - 针对当前 feature 的问题与建议，写入 `docs/prd/{feature_id}/.artifacts/notes.md`
 

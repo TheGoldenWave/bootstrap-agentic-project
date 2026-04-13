@@ -95,15 +95,26 @@ dirs=(
     "${ENGINE_DIR}/commands"
     "${ENGINE_DIR}/templates"
     "${ENGINE_DIR}/scripts/hooks"
+    "${ENGINE_DIR}/scripts/markitdown"
     "${ENGINE_DIR}/contexts"
     "${ENGINE_DIR}/rules/common"
     ".codex/agents"
     ".agents/skills"
+    ".sources"
+    ".sources/articles"
+    ".sources/docs"
+    ".sources/data"
+    ".sources/.converted"
     "docs/context/team"
     "docs/context/project/experience"
     "docs/context/business"
     "docs/context/product-initiated"
     "docs/context/technical"
+    "docs/context/wiki"
+    "docs/context/wiki/entities"
+    "docs/context/wiki/concepts"
+    "docs/context/wiki/comparisons"
+    "docs/context/wiki/syntheses"
     "docs/prd/.demo-feature"
     "docs/prd/.demo-feature/.artifacts"
     "docs/design/tokens"
@@ -218,6 +229,13 @@ echo "🔗 Installing hook scripts..."
 safe_copy_dir "${ASSETS_DIR}/engine-templates/scripts/hooks" "${ENGINE_DIR}/scripts/hooks"
 
 # =================================================================
+# 6b. Markitdown scripts (knowledge base tooling)
+# =================================================================
+echo ""
+echo "📚 Installing Markitdown scripts..."
+safe_copy_dir "${ASSETS_DIR}/engine-templates/scripts/markitdown" "${ENGINE_DIR}/scripts/markitdown"
+
+# =================================================================
 # 7. Contexts (dynamic mode prompts)
 # =================================================================
 echo ""
@@ -299,6 +317,14 @@ if [ -d "$GLOBAL_SKILLS_DIR" ]; then
     mkdir -p "${GLOBAL_SKILLS_DIR}/reflect"
     safe_copy "${ASSETS_DIR}/engine-templates/skills/reflect/SKILL.md" "${GLOBAL_SKILLS_DIR}/reflect/SKILL.md"
     echo "  🌐 /reflect available globally at ${GLOBAL_SKILLS_DIR}/reflect/"
+
+    mkdir -p "${GLOBAL_SKILLS_DIR}/ingest"
+    safe_copy "${ASSETS_DIR}/engine-templates/skills/ingest/SKILL.md" "${GLOBAL_SKILLS_DIR}/ingest/SKILL.md"
+    echo "  🌐 /ingest available globally at ${GLOBAL_SKILLS_DIR}/ingest/"
+
+    mkdir -p "${GLOBAL_SKILLS_DIR}/wiki"
+    safe_copy "${ASSETS_DIR}/engine-templates/skills/wiki/SKILL.md" "${GLOBAL_SKILLS_DIR}/wiki/SKILL.md"
+    echo "  🌐 /wiki available globally at ${GLOBAL_SKILLS_DIR}/wiki/"
 fi
 
 # =================================================================
@@ -330,6 +356,8 @@ fi
 echo ""
 echo "📚 Copying docs templates..."
 safe_copy "${ASSETS_DIR}/docs-templates/INDEX.md" "docs/context/INDEX.md"
+safe_copy "${ASSETS_DIR}/docs-templates/log.md" "docs/context/log.md"
+safe_copy "${ASSETS_DIR}/docs-templates/wiki/overview.md" "docs/context/wiki/overview.md"
 safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo" "docs/prd/.demo-feature"
 # Copy hidden .artifacts directory (safe_copy_dir skips dotfiles)
 mkdir -p "docs/prd/.demo-feature/.artifacts"
@@ -351,6 +379,13 @@ if [ -f "$GITIGNORE" ]; then
         GITIGNORE_CHANGED=true
     else
         echo "  ⏭  mcp-servers.json already in .gitignore"
+    fi
+
+    if ! grep -q "\.sources/\.converted" "$GITIGNORE" 2>/dev/null; then
+        echo ".sources/.converted/" >> "$GITIGNORE"
+        echo "  ✅ Added .sources/.converted/ to .gitignore"
+    else
+        echo "  ⏭  .sources/.converted/ already in .gitignore"
     fi
 
     if ! grep -q "\.codex/config\.toml" "$GITIGNORE" 2>/dev/null; then
@@ -388,6 +423,8 @@ echo "🔗 Claude Hooks         : SessionStart + PreToolUse(Edit) + Stop → ${E
 echo "🔷 Codex 多 Agent       : [agents.*] in .codex/config.toml"
 echo "🎨 Design Tokens        : docs/design/tokens/base.json"
 echo "📋 PM 工作流模板       : ${ENGINE_DIR}/templates/"
+echo "📚 知识库 Wiki 层       : docs/context/wiki/ + .sources/"
+echo "🔌 Markitdown MCP       : markitdown (uvx markitdown-mcp)"
 echo ""
 echo "💡 下一步："
 echo "   1. 检查并填写 ${ENGINE_DIR}/mcp-servers.json 中的 API Key（Claude Code）"
@@ -396,11 +433,18 @@ echo "   3. 这两个文件已自动加入 .gitignore，API Key 不会泄露"
 echo "   4. 体验双视窗 PRD：双击 docs/prd/.demo-feature/预览PRD-macOS.command（macOS）"
 echo "                     或  docs/prd/.demo-feature/预览PRD-Windows.bat（Windows）"
 echo ""
+echo "   5. 安装 Markitdown: pip install markitdown（或 uvx markitdown-mcp）"
+echo ""
 echo "   开始第一个需求："
 echo "   • Claude Code: /prd [你的初步想法]        （业务提需：/prd business ...）"
 echo "   • Codex CLI  : /agent pm [你的初步想法]"
 echo "   项目排期管理："
 echo "   • Claude Code: /progress init {feature_id}"
 echo "   • Codex CLI  : /agent project-manager init {feature_id}"
+echo "   知识库管理："
+echo "   • /ingest <file-or-url>     （纳入外部知识源）"
+echo "   • /wiki query <topic>        （查询知识库）"
+echo "   • /wiki generate overview    （生成知识总览）"
+echo "   • /reflect lint              （知识库健康检查）"
 echo ""
 echo "🚀 Enjoy your Vibe Coding!"

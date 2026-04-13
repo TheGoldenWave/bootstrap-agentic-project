@@ -17,9 +17,13 @@ your-project/
 ├── .claude/
 │   ├── contexts/dev.md            ← 开发模式专用 Prompt（进入开发模式时读取）
 │   └── rules/common/coding-style.md  ← 全局编码规范（每次提交前必遵守）
+├── .sources/                      ← 外部知识源（LLM 只读，/ingest 处理）
 ├── docs/
 │   ├── context/
 │   │   ├── INDEX.md               ← 知识库索引（开始任务前检索）
+│   │   ├── wiki/                  ← Wiki 页面（实体/概念/比较/综合）
+│   │   │   ├── entities/          ← 查阅 API、库、组件的已有知识
+│   │   │   └── concepts/          ← 查阅技术模式和原则
 │   │   └── project/experience/    ← 历史踩坑记录
 │   ├── prd/{feature_id}/
 │   │   ├── PRD.md                 ← 需求文档（必读）
@@ -60,6 +64,8 @@ your-project/
 - 遇到技术难点或踩坑时，**必须**记录到 `docs/prd/{feature_id}/.artifacts/notes.md`。
 - 完成重要里程碑后，更新 `docs/prd/{feature_id}/.artifacts/process.txt` 中的 `current_phase` 状态。
 - 具有团队复用价值的踩坑记录，同步提炼一份到 `docs/context/project/experience/`。
+- 踩坑后建议运行 `/reflect` 将新知识归档到 INDEX.md。
+- 遇到不熟悉的 API/库时，先查 `docs/context/wiki/entities/` 是否有已有知识页面。
 
 ## ⚠️ 行为禁忌与护栏
 - **绝对不要**跳过测试直接提交代码。

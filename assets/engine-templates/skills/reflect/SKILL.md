@@ -1,8 +1,8 @@
 ---
 name: reflect
-description: Consolidate project knowledge by scanning feature notes and experience files, then updating the structured team knowledge index (docs/context/INDEX.md). Use after completing a feature, fixing a tricky bug, or when session-stop suggests running it.
+description: Consolidate project knowledge by scanning feature notes, experience files, and Wiki pages, then updating the knowledge index (docs/context/INDEX.md). Also performs knowledge base health checks (lint). Use after completing a feature, fixing a tricky bug, when session-stop suggests it, or to audit Wiki quality.
 user-invocable: true
-argument-hint: "[scan|promote|status]"
+argument-hint: "[scan|promote|lint|status]"
 ---
 
 # /reflect — Knowledge Consolidation
@@ -36,6 +36,12 @@ Glob `docs/prd/**/notes.md` and `docs/prd/**/.artifacts/notes.md`. For each file
 Glob `docs/context/project/experience/**/*.md`. Each file is a candidate:
 - Check if its path already appears in INDEX.md — skip if indexed
 - Extract title from first `# ` header or filename
+
+### 2b+. Wiki pages
+Glob `docs/context/wiki/**/*.md` (excluding `overview.md`). Each file is a candidate:
+- Check if its path already appears in INDEX.md — skip if indexed
+- Extract title and type from frontmatter or first heading
+- Entity pages → classify by entity type; Concept pages → 🧩 设计模式 or 📚 领域知识
 
 ### 2c. Blockers from process files (optional)
 Glob `docs/prd/**/process.md` and `docs/prd/**/process.txt`. Look for blocker entries:
@@ -92,11 +98,64 @@ For feature-level notes (`docs/prd/{feature}/notes.md` or `.artifacts/notes.md`)
 3. The new file should have a `# Title` and the distilled content (not a raw copy)
 4. The INDEX.md entry should point to this new promoted file
 
+## Step 6: Lint — 知识库健康检查 (Optional)
+
+如果使用 `lint` 参数，执行以下检查而非 scan 流程：
+
+### 6a. 孤立页面检测
+Glob `docs/context/wiki/**/*.md`，检查每个页面路径是否在 INDEX.md 的详情列中出现。未出现的 → 标记为孤立页。
+
+### 6b. 交叉引用完整性
+读取所有 Wiki 页面，查找 `相关页面` 部分中的链接目标（`../entities/{name}.md`、`../concepts/{name}.md` 等），检查目标文件是否存在。断链 → 标记。
+
+### 6c. 陈旧检测
+对每个 Wiki 页面，找到其 `来源引用` 中列出的 `.sources/.converted/` 文件。比较 mtime：如果来源文件比 Wiki 页面更新（说明来源被重新 ingest 了），标记 Wiki 页面可能需要更新。
+
+### 6d. 覆盖度分析
+- 统计 `.sources/` 中的原始文件数（排除 `.converted/`）
+- 统计 `.sources/.converted/` 中已转换文件数
+- 计算 ingest 覆盖率：`已转换 / 原始文件总数`
+- 统计 `wiki/` 各子目录页面数
+
+### 6e. 缺失页面建议
+扫描所有 Wiki 页面正文，提取频繁出现但没有独立页面的实体/概念名称。使用简单启发式：
+- 被 2+ 个不同页面提到
+- 不是 Wiki 中已有页面的标题
+- 不是通用词汇
+
+### 6f. 生成 Lint 报告
+
+```
+🔍 知识库健康检查报告
+
+📊 覆盖度
+  来源文件: {N} | 已转换: {M} | 覆盖率: {M/N}%
+  Wiki 页面: entities({n}) concepts({n}) comparisons({n}) syntheses({n})
+
+⚠️ 孤立页面 ({N}):
+  - docs/context/wiki/entities/xxx.md (不在 INDEX.md 中)
+
+🔗 断链 ({N}):
+  - docs/context/wiki/concepts/yyy.md → ../entities/zzz.md (目标不存在)
+
+📅 可能陈旧 ({N}):
+  - docs/context/wiki/entities/aaa.md (来源更新于 2026-04-10，页面更新于 2026-03-15)
+
+💡 建议新建页面:
+  - "GraphQL" (被 3 个页面提到，无独立页面)
+  - "Redis Cluster" (被 2 个页面提到)
+```
+
+使用 `AskUserQuestion` 询问是否自动修复（添加孤立页到 INDEX、删除断链、标记陈旧页面需更新）。
+
+追加 `## [YYYY-MM-DD] lint | {summary}` 到 `docs/context/log.md`。
+
 ## Sub-commands
 
 - `/reflect` or `/reflect scan` — Run Steps 1-4 (scan + index update)
 - `/reflect promote` — Run Steps 1-5 (scan + index + promote to experience/)
-- `/reflect status` — Show stats: total indexed entries per category, last update date, coverage (indexed vs total knowledge files)
+- `/reflect lint` — Run Step 6 (knowledge base health check)
+- `/reflect status` — Show stats: total indexed entries per category, last update date, coverage (indexed vs total knowledge files), Wiki page counts
 
 ## Execution Rules
 
@@ -105,3 +164,5 @@ For feature-level notes (`docs/prd/{feature}/notes.md` or `.artifacts/notes.md`)
 3. **Be conservative with classification** — when unsure, ask the user which category fits
 4. **Date format**: YYYY-MM-DD
 5. **Idempotent**: running `/reflect` twice should produce no duplicates (path-based dedup)
+6. **Lint is read-only by default** — only writes fixes after explicit user confirmation
+7. **Log all operations** — append to `docs/context/log.md` after scan, promote, or lint

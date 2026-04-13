@@ -14,9 +14,12 @@ model: sonnet
 your-project/
 ├── AGENTS.md / CLAUDE.md              ← 全局路由入口（必读）
 ├── .claude/rules/common/coding-style.md ← 编码规范（测试代码也要遵守）
+├── .sources/                          ← 外部知识源（LLM 只读，/ingest 处理）
 ├── docs/
 │   ├── context/
 │   │   ├── INDEX.md                   ← 知识库索引（了解历史 bug 规律）
+│   │   ├── wiki/                      ← Wiki 页面（查阅实体/概念/比较分析）
+│   │   │   └── entities/              ← 查阅被测组件/API 的已有知识
 │   │   └── project/experience/        ← 历史踩坑记录（测试用例灵感来源）
 │   ├── prd/{feature_id}/
 │   │   ├── PRD.md                     ← 验收标准来源（必读）

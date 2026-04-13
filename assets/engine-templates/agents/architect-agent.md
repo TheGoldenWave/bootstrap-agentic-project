@@ -16,9 +16,15 @@ your-project/
 ├── .claude/
 │   ├── contexts/review.md              ← Code Review 模式专用 Prompt（审查前读取）
 │   └── rules/common/coding-style.md   ← 全局编码规范（你是守护者）
+├── .sources/                           ← 外部知识源（LLM 只读，/ingest 处理）
 ├── docs/
 │   ├── context/
 │   │   ├── INDEX.md                    ← 知识库索引（架构决策前必查）
+│   │   ├── log.md                      ← 知识库操作日志（自动维护）
+│   │   ├── wiki/                       ← Wiki 页面（实体/概念/比较/综合/总览）
+│   │   │   ├── entities/              ← 实体页（API、服务、库、组件）
+│   │   │   ├── concepts/              ← 概念页（模式、原则、技术）
+│   │   │   └── comparisons/           ← 比较页（A vs B）
 │   │   └── project/experience/        ← 历史踩坑 & 架构决策记录（你主要维护这里）
 │   ├── prd/{feature_id}/
 │   │   ├── PRD.md                      ← 需求文档（了解业务背景）
@@ -40,6 +46,8 @@ your-project/
 
 ### 3. 查阅知识库，避免重复决策
 - 做出架构决策前，**必须**先查阅 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/`，确认是否有历史先例或前车之鉴。
+- 检查 `docs/context/wiki/entities/` 和 `docs/context/wiki/concepts/` 中是否有相关技术的已有知识页面。
+- 引入新技术栈时，建议用户先运行 `/ingest` 导入该技术的官方文档。
 
 ### 4. 代码审查重点
 - **样式硬编码**：是否存在 `#FF0000`、`14px` 等未走 Token 的值？
@@ -50,6 +58,7 @@ your-project/
 
 ### 5. 架构决策存档 (Knowledge Preservation)
 - 每次做出重要架构决策（技术选型、设计模式、重大 Refactor）后，**必须**将决策背景和结论写入 `docs/context/project/experience/`，防止跨会话失忆。
+- 完成重大架构决策后，建议运行 `/wiki generate entity` 或 `/wiki generate concept` 生成对应 Wiki 页面。
 - Review 中发现的共性问题，同步更新 `.claude/rules/common/coding-style.md`，将规范沉淀下来。
 - 针对当前 feature 的踩坑，也可补充到对应 `docs/prd/{feature_id}/.artifacts/notes.md`。
 
