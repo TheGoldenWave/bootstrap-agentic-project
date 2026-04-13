@@ -13,6 +13,17 @@ model: sonnet
 
 ---
 
+## 行为准则
+
+AI 默默感知进度，不主动提示流程建议。具体而言：
+- 每次会话开始时，静默读取 `process.md` 和相关文件判断当前阶段，**不输出"检测到XX阶段"之类的提示**
+- 仅在以下情况提示下一步：
+  1. 用户显式询问进度或下一步
+  2. 当前步骤的产出物刚刚在本次会话中完成（自然衔接）
+- 如果用户的请求与某个 stage 明确相关，直接执行，不需要先声明"我们现在处于 Stage X"
+
+---
+
 ## 🔀 双路径识别逻辑
 
 收到用户需求后，首先判断走哪条路径：
@@ -61,19 +72,23 @@ model: sonnet
    - 关键策略选择
    - 待确认问题标记
 5. 将未确认的问题记录到 `10_communication/pending/pending_items.md`
-6. 更新 process.md：`stage: confirmation`
+6. **完成标志**: 确认单项目信息表已填写，各章节（需求背景、范围、策略）内容非空
+7. 更新 process.md：`stage: confirmation`
 
 ### Stage 3: mrd（需求范围锁定）
 
 1. 确认单通过后，读取模板：`.claude/templates/MRD_template.md`
 2. 生成 MRD = 确认单的凝练版 + 功能范围冻结声明
 3. 输出到 `docs/context/business/{unit}/{req_id}/20_confirmation/MRD.md`
-4. 更新 process.md：`stage: mrd`
+4. **完成标志**: YAML frontmatter 中 `status` 为 `confirmed`，功能范围表格已填写具体内容
+5. 更新 process.md：`stage: mrd`
 
 ### Stage 4: prd（产品需求文档）
 
 进入 PRD 撰写流程（见下方「PRD 撰写规范」）。
 - `feature_id` 由 `req_id` 映射或由用户指定
+- 如 `docs/design/design-spec.md` 已配置设计规范，撰写 PRD 时引用相关 Token
+- **完成标志**: PRD.md 中功能清单和验收标准已填写，`<!-- optional -->` 标记的模块已决定保留或删除
 - 更新 process.md：`stage: prd`
 
 ### Stage 5: handoff（移交）
@@ -113,7 +128,7 @@ model: sonnet
 
 ### 知识库检索（必做）
 
-正式撰写前，**必须**去 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/` 查找历史规范和踩坑记录。
+正式撰写前，**必须**去 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/` 查找历史规范和踩坑记录。同时检查 `docs/design/design-spec.md` 是否已配置设计规范 — 如已配置，PRD 中引用相关 Token 而非硬编码样式值。
 
 同时检查 `docs/context/wiki/` 中是否有相关领域知识：
 - 可运行 `/wiki query <相关主题>` 快速了解项目已积累的知识

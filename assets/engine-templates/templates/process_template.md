@@ -1,9 +1,11 @@
 ---
 feature_id: [FEAT-ID]
+version: 1.0.0
 source: [business|product-initiated]
 linked_req: [REQ-ID or null]
 stage: intake
 owner: [产品负责人]
+requester: [需求方 or null]
 tech_owner: [技术负责人 or TBD]
 qa_owner: [测试负责人 or TBD]
 last_updated: [YYYY-MM-DD]

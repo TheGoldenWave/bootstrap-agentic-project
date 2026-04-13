@@ -1,7 +1,8 @@
 ---
 req_id: [REQ-ID]
-version: 1.0
+version: 1.0.0
 status: draft
+requester: [需求方]
 confirmed_by: []
 freeze_date: null
 ---
