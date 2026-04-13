@@ -295,6 +295,10 @@ if [ -d "$GLOBAL_SKILLS_DIR" ]; then
     mkdir -p "${GLOBAL_SKILLS_DIR}/C-startup"
     safe_copy "${ASSETS_DIR}/engine-templates/skills/C-startup/SKILL.md" "${GLOBAL_SKILLS_DIR}/C-startup/SKILL.md"
     echo "  🌐 /C-startup available globally at ${GLOBAL_SKILLS_DIR}/C-startup/"
+
+    mkdir -p "${GLOBAL_SKILLS_DIR}/reflect"
+    safe_copy "${ASSETS_DIR}/engine-templates/skills/reflect/SKILL.md" "${GLOBAL_SKILLS_DIR}/reflect/SKILL.md"
+    echo "  🌐 /reflect available globally at ${GLOBAL_SKILLS_DIR}/reflect/"
 fi
 
 # =================================================================

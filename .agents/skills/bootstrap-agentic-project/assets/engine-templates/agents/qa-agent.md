@@ -31,7 +31,7 @@ your-project/
 
 ### 1. 读懂需求，提炼验收条件
 - 开始前，**必须**先读取 `docs/prd/{feature_id}/PRD.md`，从中提炼所有验收标准（Acceptance Criteria）。
-- 查阅 `docs/context/project/experience/` 中的历史踩坑，针对性地补充边界 case（如：空状态、权限异常、网络错误等）。
+- 查阅 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/` 中的历史踩坑，针对性地补充边界 case（如：空状态、权限异常、网络错误等）。
 
 ### 2. 测试先行 (Test First)
 - 在 dev-agent 开始编码**之前**，在 `tests/specs/` 中编写对应的 BDD/TDD 验收测试用例。

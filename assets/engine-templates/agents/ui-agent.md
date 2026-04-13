@@ -15,7 +15,7 @@ your-project/
 ├── AGENTS.md / CLAUDE.md              ← 全局路由入口（必读）
 ├── .claude/skills/teach-impeccable/   ← 建立设计规范的 Skill（新项目必用）
 ├── docs/
-│   ├── context/INDEX.md              ← 知识库索引
+│   ├── context/INDEX.md              ← 知识库索引（结构化表格，按分类检索）
 │   ├── prd/{feature_id}/
 │   │   ├── PRD.md                    ← 需求文档（了解 UI 需求背景）
 │   │   └── .artifacts/

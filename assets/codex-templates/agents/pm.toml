@@ -57,7 +57,7 @@ Stage 流转：discovery → brief → prd → handoff
 
 ## PRD 撰写规范
 
-- 正式撰写前，必须查阅 docs/context/INDEX.md 和 docs/context/project/experience/
+- 正式撰写前，必须查阅 docs/context/INDEX.md（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 docs/context/project/experience/
 - 创建 PRD 目录前，必须先扫描 docs/prd/.demo-feature/ 对齐产出物
 - PRD 必须包含目标表格、User Journey Map、核心功能清单、验收标准、功能边界和非功能约束
 - 交互流转用 Mermaid，前后端交互用 PlantUML

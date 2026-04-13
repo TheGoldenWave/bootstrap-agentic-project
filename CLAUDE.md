@@ -35,7 +35,7 @@ references/           ← Conceptual guide (agentic-engineering-guide.md)
 3. Creates full directory tree (`ENGINE_DIR/`, `.codex/`, `docs/`, `tests/`, `src/`)
 4. Copies `AGENTS.md` to root; creates `CLAUDE.md` as symlink (or appends routing to existing files)
 5. Generates `settings.json` by substituting `{{ENGINE_DIR}}` placeholder in template
-6. Copies 6 agent definitions, slash commands, PM workflow templates, hook scripts, contexts, rules, design tokens, MCP config, Codex config, 21+ skills (design + prd + progress + C-startup), and docs templates
+6. Copies 6 agent definitions, slash commands, PM workflow templates, hook scripts, contexts, rules, design tokens, MCP config, Codex config, 22+ skills (design + prd + progress + C-startup + reflect), and docs templates
 7. Protects `mcp-servers.json` and `.codex/config.toml` in `.gitignore`
 
 All file operations use `safe_copy` — skip if destination exists.
@@ -44,9 +44,9 @@ All file operations use `safe_copy` — skip if destination exists.
 
 Located in `assets/engine-templates/scripts/hooks/`:
 
-- **session-start.js** (SessionStart) — scans `docs/prd/**/process.txt` and `process.md` (with YAML frontmatter stage extraction), injects content as context via stdout JSON
+- **session-start.js** (SessionStart) — scans `docs/prd/**/process.txt` and `process.md` (with YAML frontmatter stage extraction), injects content as context via stdout JSON. V3: budget-aware injection (MAX_CONTEXT_CHARS = 8000), prioritizes newest files, over-budget files get frontmatter summary only with a truncation notice
 - **check-console-log.js** (PreToolUse/Edit) — reads tool input from stdin, blocks edits containing `console.log` in `.ts/.tsx/.js/.jsx` files (exit 2)
-- **session-stop.js** (Stop) — first trigger exits 2 with save-progress reminder; second trigger (`stop_hook_active: true`) exits 0 to break the loop
+- **session-stop.js** (Stop) — first trigger exits 2 with save-progress reminder; second trigger (`stop_hook_active: true`) exits 0 to break the loop. V3: detects both process.txt and process.md, suggests `/reflect` when notes.md files were recently modified
 
 ### Template Substitution
 
@@ -61,4 +61,5 @@ Only `settings.json` uses the `{{ENGINE_DIR}}` placeholder, resolved by `sed` in
 - `mcp-servers.json` and `.codex/config.toml` contain API key placeholders — never commit real values
 - Design tokens live in `docs/design/tokens/base.json` — hardcoded colors/spacing/fonts are prohibited in bootstrapped projects
 - `process.txt` and `process.md` files under `docs/prd/` serve as cross-session memory, auto-loaded by the SessionStart hook
+- `docs/context/INDEX.md` is a structured knowledge index with 5 category tables, maintained via `/reflect` skill
 - PM workflow templates (confirmation sheet, MRD, product brief, process board) live in `{ENGINE_DIR}/templates/`

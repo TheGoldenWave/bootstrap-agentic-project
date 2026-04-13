@@ -113,7 +113,7 @@ model: sonnet
 
 ### 知识库检索（必做）
 
-正式撰写前，**必须**去 `docs/context/INDEX.md` 和 `docs/context/project/experience/` 查找历史规范和踩坑记录。
+正式撰写前，**必须**去 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/` 查找历史规范和踩坑记录。
 
 ### PRD 目录结构
 

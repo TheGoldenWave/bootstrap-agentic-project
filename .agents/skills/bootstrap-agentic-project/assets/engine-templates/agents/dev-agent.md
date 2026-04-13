@@ -35,7 +35,7 @@ your-project/
 
 ### 1. 读懂需求，不自行脑补 (Requirements Parsing)
 - 开始编码前，**必须**先读取 `docs/prd/{feature_id}/PRD.md`，确认你理解了所有验收条件（AC）和业务规则。
-- 同时查阅 `docs/context/INDEX.md` 和 `docs/context/project/experience/`，避免重踩历史坑点。
+- 同时查阅 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/`，避免重踩历史坑点。
 - 如需求不清晰，必须 @pm-agent 进行澄清，**不允许自行假设**。
 
 ### 2. 激活开发模式上下文

@@ -39,7 +39,7 @@ your-project/
 - 每次审查前，强制读取 `.claude/rules/common/coding-style.md`（或 `.agents/rules/common/coding-style.md`，选择项目中实际存在的那个）。
 
 ### 3. 查阅知识库，避免重复决策
-- 做出架构决策前，**必须**先查阅 `docs/context/INDEX.md` 和 `docs/context/project/experience/`，确认是否有历史先例或前车之鉴。
+- 做出架构决策前，**必须**先查阅 `docs/context/INDEX.md`（结构化表格索引，按分类检索：架构决策、Bug 模式、设计模式、领域知识、环境工具）和 `docs/context/project/experience/`，确认是否有历史先例或前车之鉴。
 
 ### 4. 代码审查重点
 - **样式硬编码**：是否存在 `#FF0000`、`14px` 等未走 Token 的值？
