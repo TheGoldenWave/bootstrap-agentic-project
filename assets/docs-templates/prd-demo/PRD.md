@@ -1,4 +1,4 @@
-# PRD — 用户登录模块 (FEAT-DEMO)
+# PRD — 用户登录模块 (demo-用户登录模块-202604)
 
 > 编写规范详见 `.claude/templates/PRD-writing-guide.md`。
 > 标记 `<!-- optional -->` 的模块按需保留或删除。

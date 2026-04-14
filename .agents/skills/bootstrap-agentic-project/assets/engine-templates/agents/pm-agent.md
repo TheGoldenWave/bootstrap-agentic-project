@@ -86,7 +86,7 @@ AI 默默感知进度，不主动提示流程建议。具体而言：
 ### Stage 4: prd（产品需求文档）
 
 进入 PRD 撰写流程（见下方「PRD 撰写规范」）。
-- `feature_id` 由 `req_id` 映射或由用户指定
+- `feature_id` 采用描述性命名：`{version}-{需求名称}-{YYYYMM}`（如 `1.0.0-用户登录重构-202604`），由用户提供的版本号、需求名称和当前日期自动拼接；也可由用户直接指定
 - 如 `docs/design/design-spec.md` 已配置设计规范，撰写 PRD 时引用相关 Token
 - **完成标志**: PRD.md 中功能清单和验收标准已填写，`<!-- optional -->` 标记的模块已决定保留或删除
 - 更新 process.md：`stage: prd`
@@ -214,7 +214,7 @@ echo ✅ 预览已在浏览器打开 & pause
 
 - session-start.js 会扫描所有 process.md，提取 stage 字段并注入上下文
 - 读到注入的状态信息后，自动接续上次的阶段继续推进
-- 格式示例：`🧠 [项目状态] FEAT-001: stage=confirmation, source=business, owner=张三`
+- 格式示例：`🧠 [项目状态] 1.0.0-外呼对练MVP-202604: stage=confirmation, source=business, owner=张三`
 
 ### process.md YAML frontmatter
 
@@ -222,11 +222,13 @@ echo ✅ 预览已在浏览器打开 & pause
 
 ```yaml
 ---
-feature_id: FEAT-2025-001
+feature_id: 1.0.0-外呼对练MVP-202604    # {version}-{需求名称}-{YYYYMM}
 source: business              # business | product-initiated
 linked_req: REQ-2025-001      # 仅业务路径有
 stage: confirmation            # intake | confirmation | mrd | prd | prd_complete | ...
 owner: 张三（产品）
+version: 1.0.0
+requester: 初中拉新业务线
 last_updated: 2025-04-14
 ---
 ```

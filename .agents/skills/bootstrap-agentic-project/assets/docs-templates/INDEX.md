@@ -10,25 +10,25 @@
 
 | 日期 | 来源 | 摘要 | 详情 |
 |------|------|------|------|
-| <!-- 示例: 2025-04-10 --> | <!-- FEAT-001 --> | <!-- 选用 PostgreSQL 而非 MongoDB，因为需要事务一致性 --> | <!-- docs/context/project/experience/db-choice.md --> |
+| <!-- 示例: 2025-04-10 --> | <!-- 1.0.0-用户登录-202504 --> | <!-- 选用 PostgreSQL 而非 MongoDB，因为需要事务一致性 --> | <!-- docs/context/project/experience/db-choice.md --> |
 
 ## 🐛 Bug 模式 (Bug Patterns)
 
 | 日期 | 来源 | 摘要 | 详情 |
 |------|------|------|------|
-| <!-- 示例: 2025-04-12 --> | <!-- FEAT-002 --> | <!-- 并发写入导致乐观锁冲突，需 retry 机制 --> | <!-- docs/context/project/experience/optimistic-lock-retry.md --> |
+| <!-- 示例: 2025-04-12 --> | <!-- 1.0.0-并发优化-202504 --> | <!-- 并发写入导致乐观锁冲突，需 retry 机制 --> | <!-- docs/context/project/experience/optimistic-lock-retry.md --> |
 
 ## 🧩 设计模式 (Design Patterns)
 
 | 日期 | 来源 | 摘要 | 详情 |
 |------|------|------|------|
-| <!-- 示例: 2025-04-11 --> | <!-- FEAT-001 --> | <!-- 统一使用 Repository 模式封装数据访问层 --> | <!-- docs/context/project/experience/repository-pattern.md --> |
+| <!-- 示例: 2025-04-11 --> | <!-- 1.0.0-用户登录-202504 --> | <!-- 统一使用 Repository 模式封装数据访问层 --> | <!-- docs/context/project/experience/repository-pattern.md --> |
 
 ## 📚 领域知识 (Domain Knowledge)
 
 | 日期 | 来源 | 摘要 | 详情 |
 |------|------|------|------|
-| <!-- 示例: 2025-04-13 --> | <!-- FEAT-003 --> | <!-- 优惠券叠加规则：同类不叠加，异类最多叠 2 张 --> | <!-- docs/context/project/experience/coupon-rules.md --> |
+| <!-- 示例: 2025-04-13 --> | <!-- 1.1.0-优惠券系统-202504 --> | <!-- 优惠券叠加规则：同类不叠加，异类最多叠 2 张 --> | <!-- docs/context/project/experience/coupon-rules.md --> |
 
 ## 🔧 环境与工具 (Environment & Tooling)
 

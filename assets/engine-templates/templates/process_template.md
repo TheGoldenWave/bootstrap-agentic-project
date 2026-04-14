@@ -1,5 +1,5 @@
 ---
-feature_id: [FEAT-ID]
+feature_id: [version-需求名称-YYYYMM]
 version: 1.0.0
 source: [business|product-initiated]
 linked_req: [REQ-ID or null]
@@ -23,7 +23,7 @@ last_updated: [YYYY-MM-DD]
 
 ```mermaid
 gantt
-    title [FEAT-ID] 项目排期
+    title [feature_id] 项目排期
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
 

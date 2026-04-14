@@ -65,7 +65,7 @@ Present a numbered list to the user:
 ```
 发现 N 条未索引的知识条目：
 
-1. [🐛 Bug 模式] 并发写入导致乐观锁冲突 — 来源: docs/prd/FEAT-002/.artifacts/notes.md
+1. [🐛 Bug 模式] 并发写入导致乐观锁冲突 — 来源: docs/prd/1.0.0-并发优化-202504/.artifacts/notes.md
 2. [🏗️ 架构决策] 选用 Redis 做分布式锁 — 来源: docs/context/project/experience/redis-lock.md
 3. ...
 

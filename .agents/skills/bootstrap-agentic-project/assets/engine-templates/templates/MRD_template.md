@@ -1,5 +1,5 @@
 ---
-req_id: [REQ-ID]
+req_id: [version-需求名称-YYYYMM]
 version: 1.0.0
 status: draft
 requester: [需求方]
