@@ -59,7 +59,7 @@ Only `settings.json` uses the `{{ENGINE_DIR}}` placeholder, resolved by `sed` in
 - `CLAUDE.md` is a **symlink** to `AGENTS.md` when absent; if it already exists, bootstrap appends a short bridge note instead of duplicating the full routing document
 - The 6 agent roles (pm, project-manager, dev, architect, ui, qa) exist in two formats: `.md` for Claude Code, `.toml` for Codex
 - pm-agent supports dual-path workflow: business (confirmation sheet → MRD → PRD) and product-initiated (product brief → PRD)
-- project-manager-agent manages process.md: scheduling, progress tracking, blocker management
+- project-manager-agent manages process.md: scheduling, progress tracking, blocker management, and kanban coordination
 - `mcp-servers.json` and `.codex/config.toml` contain API key placeholders — never commit real values
 - Design tokens live in `docs/design/tokens/base.json` — hardcoded colors/spacing/fonts are prohibited in bootstrapped projects
 - `.artifacts/process.md` is the primary cross-session memory file under `docs/prd/`; legacy `process.txt` remains read-compatible for migration
@@ -67,6 +67,6 @@ Only `settings.json` uses the `{{ENGINE_DIR}}` placeholder, resolved by `sed` in
 - `docs/context/wiki/` is the LLM-generated knowledge layer (entities, concepts, comparisons, syntheses, overview), managed via `/wiki` and `/ingest` skills
 - `.sources/` holds external knowledge sources (LLM read-only); `.sources/.converted/` caches Markitdown conversions
 - `/ingest` converts external files (PDF/DOCX/PPTX/HTML/etc.) into wiki pages; `/wiki` queries and generates wiki content; `/reflect lint` checks wiki health
-- PM workflow templates (confirmation sheet, MRD, product brief, process board) live in `{ENGINE_DIR}/templates/`
+- PM workflow templates (confirmation sheet, MRD, product brief, process board, iteration kanban) live in `{ENGINE_DIR}/templates/`
 - 最终任务进度汇报请使用中文
 - 代码需同步推送到两个远端：GitHub (`origin`) 和作业帮内部 GitLab (`https://git.zuoyebang.cc/zhiboke_pm/Skill-bootstrap-agentic-project`)

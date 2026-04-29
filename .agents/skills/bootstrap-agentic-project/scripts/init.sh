@@ -362,10 +362,12 @@ echo "📚 Copying docs templates..."
 safe_copy "${ASSETS_DIR}/docs-templates/INDEX.md" "docs/context/INDEX.md"
 safe_copy "${ASSETS_DIR}/docs-templates/log.md" "docs/context/log.md"
 safe_copy "${ASSETS_DIR}/docs-templates/wiki/overview.md" "docs/context/wiki/overview.md"
+safe_copy "${ASSETS_DIR}/docs-templates/迭代总览.kanban" "docs/迭代总览.kanban"
 safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo" "docs/prd/.demo-feature"
 # Copy hidden .artifacts directory (safe_copy_dir skips dotfiles)
 mkdir -p "docs/prd/.demo-feature/.artifacts"
 safe_copy_dir "${ASSETS_DIR}/docs-templates/prd-demo/.artifacts" "docs/prd/.demo-feature/.artifacts"
+safe_copy "${ASSETS_DIR}/engine-templates/templates/iteration.kanban" "docs/prd/.demo-feature/.artifacts/iteration.kanban"
 chmod +x "docs/prd/.demo-feature/预览PRD-macOS.command" 2>/dev/null || true
 
 # =================================================================

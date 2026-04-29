@@ -62,6 +62,12 @@ gantt
 |:---|:---|:---|:---|
 | (暂无) | - | - | - |
 
+## 关联看板
+
+- **项目级总览**: `docs/迭代总览.kanban`
+- **Feature 执行看板**: `.artifacts/iteration.kanban`
+- **维护原则**: 项目级看板只维护 feature 汇总状态；详细任务在 feature 执行看板中维护。
+
 ## 进度日志
 
 ### [YYYY-MM-DD]

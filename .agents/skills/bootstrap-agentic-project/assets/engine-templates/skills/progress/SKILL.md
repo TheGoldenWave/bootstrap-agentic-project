@@ -1,6 +1,6 @@
 ---
 name: progress
-description: Activate the Project Manager Agent for schedule management, progress tracking, and blocker management. Use when the user wants to initialize a project schedule, check progress, update milestones, or record blockers.
+description: Activate the Project Manager Agent for schedule management, progress tracking, blocker management, and kanban coordination. Use when the user wants to initialize a project schedule, check progress, update milestones, record blockers, or maintain iteration boards.
 user-invocable: true
 argument-hint: "init|view|update|block {feature_id} [description]"
 ---

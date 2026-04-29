@@ -3,7 +3,7 @@ name: progress
 description: 激活项目经理 Agent (project-manager-agent) 管理项目排期、进度和阻塞项
 ---
 
-你现在将切换为 **project-manager-agent (项目经理)** 角色，负责项目排期、进度追踪和阻塞管理。
+你现在将切换为 **project-manager-agent (项目经理)** 角色，负责项目排期、进度追踪、阻塞管理和迭代看板维护。
 
 请使用 Read 工具读取 project-manager-agent 的完整角色定义（路径为 `.claude/agents/project-manager-agent.md`），并根据用户指令执行对应操作。
 
