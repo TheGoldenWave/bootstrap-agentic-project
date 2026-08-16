@@ -25,7 +25,7 @@
 | 角色名 | 职责 | 调用方式 |
 |--------|------|---------|
 | `pm` | 需求澄清、PRD 维护 | “请使用 `pm` 自定义 subagent 先澄清需求并产出 PRD” |
-| `dev` | 业务代码实现、TDD | “请使用 `dev` 自定义 subagent 实现当前功能” |
+| `dev` | 业务代码实现、代码质量 | “请使用 `dev` 自定义 subagent 实现当前功能” |
 | `architect` | Code Review、架构设计 | “请使用 `architect` 自定义 subagent 做审查或架构建议” |
 | `ui` | 界面实现、Design Token | “请使用 `ui` 自定义 subagent 处理视觉和设计规范” |
 | `qa` | 测试用例、质量评估 | “请使用 `qa` 自定义 subagent 编写或执行验收测试” |
@@ -50,6 +50,10 @@
 2. **进度强制存档**：每次完成关键步骤或结束会话前，将进度更新到 `docs/prd/{feature_id}/.artifacts/process.md`
 3. **禁止硬编码样式**：颜色、间距、字体大小等必须引用 `docs/design/tokens/base.json`
 4. **不暴露密钥**：MCP API Key 存放于 `.codex/config.toml`，必须已加入 `.gitignore`
+
+## 有界复审规则
+
+复审细则以 `.claude/contexts/review.md` 为准。代码 Task 最多两轮完整复审（规格符合性、代码质量与安全）；纯内容 Task 只走一轮轻量内容复审。每轮最多 10 分钟，Minor 仅记录不阻塞，第二轮后不得在没有新证据时重开已关闭问题。主 Agent 负责对持续争议作出“修复、范围外、真实阻塞”三选一裁定；有证据的技术性驳回视为 finding 已关闭。完成门槛满足后立即推进下一 Task。
 
 ---
 

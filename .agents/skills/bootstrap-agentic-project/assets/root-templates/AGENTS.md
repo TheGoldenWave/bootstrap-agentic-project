@@ -50,10 +50,10 @@
 |-------|---------|------------|-----------|
 | `pm-agent` | 需求澄清、双路径工作流（业务提需/产品自发）、PRD 维护 | `/prd [需求描述]` | 明确要求使用 `pm` 自定义 subagent |
 | `project-manager-agent` | 项目排期、进度追踪、阻塞管理、状态报告 | `/progress [指令]` | 明确要求使用 `project-manager` 自定义 subagent |
-| `dev-agent` | 业务代码实现、TDD 开发循环 | 直接 @提及 | 明确要求使用 `dev` 自定义 subagent |
+| `dev-agent` | 业务代码实现、代码质量维护 | 直接 @提及 | 明确要求使用 `dev` 自定义 subagent |
 | `ui-agent` | 设计规范建设（teach-impeccable）、Design Token 维护、PRD 双视窗创建 | 直接 @提及 | 明确要求使用 `ui` 自定义 subagent |
 | `architect-agent` | 系统设计、架构决策、Code Review | 直接 @提及 | 明确要求使用 `architect` 自定义 subagent |
-| `qa-agent` | TDD/BDD 测试用例、质量评估 | 直接 @提及 | 明确要求使用 `qa` 自定义 subagent |
+| `qa-agent` | BDD 测试用例、质量评估 | 直接 @提及 | 明确要求使用 `qa` 自定义 subagent |
 
 ---
 
@@ -72,7 +72,16 @@
 - **开发模式**：读取 `.claude/contexts/dev.md`
   → 告知 Agent "请进入开发模式"，Agent 会主动读取该文件。
 - **审查模式**：读取 `.claude/contexts/review.md`
-  → 执行 Code Review 任务时，主动读取该文件获取审查清单。
+  → 执行代码复审或轻量内容复审时，主动读取该文件获取有界复审规则。
+
+### 有界复审总则（所有 Agent 必须遵守）
+
+- 主 Agent 在发起复审前先声明 Task 类型、文件 ownership、验收条件、威胁模型与当前轮次。
+- 代码 Task 最多两轮完整复审：第一轮检查规格符合性，第二轮检查代码质量与安全；第二轮后只处理修复带来的新 Critical/Important 证据，不重新打开已关闭问题。
+- 无代码、构建、配置、发布、权限或运行时行为变更的内容 Task，只进行一轮轻量内容复审，不进入代码质量与架构复审。
+- 每轮最多 10 分钟，超时立即输出已有 findings。所有 findings 必须使用 `.claude/contexts/review.md` 定义的结构和 Critical/Important/Minor 分级。
+- 两轮后仍有同一争议时，由主 Agent 明确裁定为修复、范围外或真实阻塞；禁止继续循环复审。
+- 适用的 Task focused tests 与相关 feature/build 检查通过、Critical 为 0、Important 已修复、凭证据技术性驳回或裁定范围外、Minor 已记录后，立即提交并进入下一 Task。
 
 ### 强制拦截（Claude Code 自动触发 / Codex 指令驱动）
 

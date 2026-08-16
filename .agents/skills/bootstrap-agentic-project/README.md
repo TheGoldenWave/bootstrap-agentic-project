@@ -268,10 +268,20 @@ pm-agent 会自动识别需求路径，通过对话式追问细化需求，按�
 |-------|---------|----------------|--------------|
 | `pm-agent` | 需求澄清、双路径工作流、PRD 撰写 | `/prd [需求]` | 明确要求使用 `pm` 自定义 subagent |
 | `project-manager-agent` | 项目排期、进度追踪、阻塞管理 | `/progress [指令]` | 明确要求使用 `project-manager` 自定义 subagent |
-| `dev-agent` | 业务代码实现、TDD 开发循环 | 直接 @提及 | 明确要求使用 `dev` 自定义 subagent |
+| `dev-agent` | 业务代码实现、代码质量维护 | 直接 @提及 | 明确要求使用 `dev` 自定义 subagent |
 | `architect-agent` | Code Review（不写 CRUD）、架构设计 | 直接 @提及 | 明确要求使用 `architect` 自定义 subagent |
 | `ui-agent` | Design Token 解析、界面还原度把控 | 直接 @提及 | 明确要求使用 `ui` 自定义 subagent |
 | `qa-agent` | BDD 测试用例、质量评估 | 直接 @提及 | 明确要求使用 `qa` 自定义 subagent |
+
+---
+
+## ⏱️ 有界复审流程
+
+- 代码 Task 最多两轮完整复审：第一轮规格符合性，第二轮代码质量与安全。
+- 纯内容 Task 只做一轮轻量内容复审，不进入代码质量或架构复审。
+- 每轮最多 10 分钟；Critical 必须修复，Important 修复、凭证据技术性驳回或由主 Agent 明确裁定范围外，Minor 只记录不阻塞。
+- 第二轮后不允许无新证据地重开旧问题；持续争议必须由主 Agent 裁定为修复、范围外或真实阻塞。
+- 完整分级、结构化 finding 模板、威胁模型边界和完成门槛见 `.claude/contexts/review.md`。
 
 ---
 

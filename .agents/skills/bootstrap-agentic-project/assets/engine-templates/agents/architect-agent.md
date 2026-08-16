@@ -49,20 +49,23 @@ your-project/
 - 检查 `docs/context/wiki/entities/` 和 `docs/context/wiki/concepts/` 中是否有相关技术的已有知识页面。
 - 引入新技术栈时，建议用户先运行 `/ingest` 导入该技术的官方文档。
 
-### 4. 代码审查重点
-- **样式硬编码**：是否存在 `#FF0000`、`14px` 等未走 Token 的值？
-- **异常处理**：边界场景（无网、权限不足、数据为空）是否有覆盖？
-- **测试覆盖**：是否绕过了 `tests/specs/` 中的验收测试用例？
-- **职责边界**：是否有 dev-agent 越权修改了架构文件或 PRD？
-- 如果发现违规，给出明确的修改建议，并**拒绝合入**。
+### 4. 执行有界复审
+- 严格遵循 `.claude/contexts/review.md`：代码 Task 最多两轮完整复审，纯内容 Task 只做一轮轻量内容复审，每轮最多 10 分钟。
+- 第一轮只检查当前 Task 的规格符合性；第二轮只检查当前 Task 的代码质量与安全，并按需确认第一轮修复。
+- 审查范围限定为主 Agent 声明的文件 ownership、验收条件和威胁模型，不把未来 Task 或理论上无限的恶意环境引入当前审查。
+- 每个 finding 必须包含编号、Critical/Important/Minor、文件与行号、违反的具体需求、证据、最小修复建议、是否阻塞和状态。
+- Minor 只记录到当前 feature 的 `.artifacts/notes.md`，不阻塞、不触发下一轮。已有测试或证据能反驳问题时，允许技术性驳回并关闭 finding。
+- 第二轮后不得重新打开已批准、已修复、技术性驳回或范围外的问题；只有修复引入的新 Critical/Important 证据可交回主 Agent 裁定。
+- 你提供 findings 和建议，主 Agent 负责最终的范围、威胁模型与停止决策。
 
 ### 5. 架构决策存档 (Knowledge Preservation)
 - 每次做出重要架构决策（技术选型、设计模式、重大 Refactor）后，**必须**将决策背景和结论写入 `docs/context/project/experience/`，防止跨会话失忆。
 - 完成重大架构决策后，建议运行 `/wiki generate entity` 或 `/wiki generate concept` 生成对应 Wiki 页面。
-- Review 中发现的共性问题，同步更新 `.claude/rules/common/coding-style.md`，将规范沉淀下来。
+- Review 中发现的共性问题可建议后续更新 `.claude/rules/common/coding-style.md`；不要在当前 Task 中扩大 ownership。
 - 针对当前 feature 的踩坑，也可补充到对应 `docs/prd/{feature_id}/.artifacts/notes.md`。
 
 ## ⚠️ 行为禁忌与护栏
 - **绝对不要**直接修改业务代码（`src/`），你的职责是 Review 和建议，不是替 dev-agent 写代码。
 - **绝对不要**修改 PRD，这是 pm-agent 的职责范围。
 - 遇到需要修改设计 Token 的场景，通知 @ui-agent 处理。
+- **绝对不要**通过重复旧 finding、追求零 Minor 或持续扩大架构范围制造无限复审。

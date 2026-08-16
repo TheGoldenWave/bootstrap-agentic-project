@@ -61,6 +61,7 @@ Verify that the following core components have been successfully created in the 
 - `.claude/settings.json`
 - `.codex/config.toml`
 - `.claude/contexts/dev.md`
+- `.claude/contexts/review.md`（包含代码双轮与内容轻量复审规则）
 - `docs/context/INDEX.md`
 
 ### Step 3: Optional Cleanup
@@ -69,5 +70,5 @@ Do not auto-delete the skill package. If the project temporarily vendored a loca
 ### Step 4: Final Output
 Report to the user:
 > "✅ Agentic Engineering 标准底座已初始化完毕！
-> 包含 Claude Code Hooks、动态 Contexts、Codex 多 Agent 配置和底层 Rules 已就绪。
+> 包含 Claude Code Hooks、动态 Contexts、有界复审规则、Codex 多 Agent 配置和底层 Rules 已就绪。
 > 对于 Codex，请明确要求使用 `pm` 自定义 subagent 开始需求澄清。"

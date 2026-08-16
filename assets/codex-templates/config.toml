@@ -80,7 +80,7 @@ description = "产品经理：需求澄清、PRD 撰写、验收标准维护与 
 config_file = "agents/pm.toml"
 
 [agents.dev]
-description = "全栈工程师：业务代码实现、TDD 开发循环、代码维护与多 Agent 协作。"
+description = "全栈工程师：业务代码实现、代码质量维护、代码维护与多 Agent 协作。"
 config_file = "agents/dev.toml"
 
 [agents.architect]
